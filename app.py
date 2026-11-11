@@ -76,7 +76,7 @@ HTML_CODE = """
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>KBC Ultimate Pro Max</title>
-  <style>
+  <style><link rel="manifest" href="/manifest.json">
     @import url('https://fonts.googleapis.com/css2?family=Teko:wght@400;600&display=swap');
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Teko', sans-serif; user-select: none; }
     body { background: #02040a; color: white; display: flex; justify-content: center; align-items: center; height: 100vh; overflow: hidden; background: radial-gradient(circle, #0a1128 0%, #000 100%); }
@@ -292,7 +292,7 @@ HTML_CODE = """
 
     // --- 2. ADS & SHOP ---
     function watchAd() {
-      let videoLink = "https://youtu.be/cLvpmdVrvag?si=bVI4pLZ6jRXO0qTX";
+      let videoLink = 
       alert("Video khul rahi hai. 10 second baad wapas aana.");
       window.open(videoLink, '_blank');
 
@@ -380,7 +380,7 @@ HTML_CODE = """
         if (timeLeft <= 0) { clearInterval(timerInterval); endGame("timeout"); }
       }, 1000);
     }
-
+f
     function checkAnswer(selected, el) {
       if (!canClick) return;
       canClick = false; clearInterval(timerInterval);
@@ -532,6 +532,24 @@ def use_lifeline():
         users[username]["lifelines"][life_type] -= 1
         return jsonify({"status": "success"})
     return jsonify({"status": "error"})
+@app.route('/manifest.json')
+def manifest():
+    return jsonify({
+        "name": "KBC Game",
+        "short_name": "KBC Game",
+        "start_url": "/",
+        "display": "standalone",
+        "background_color": "#02040a",
+        "theme_color": "#f1c40f",
+        "description": "Play KBC Quiz and win coins!",
+        "icons": [
+            {
+                "src": "https://raw.githubusercontent.com/ayannuman800-del/kbc-game/main/1794342592618.png",
+                "sizes": "512x512",
+                "type": "image/png"
+            }
+        ]
+    })
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)
