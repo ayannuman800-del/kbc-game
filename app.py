@@ -2,6 +2,7 @@ from flask import Flask, request, jsonify, render_template_string
 from flask_cors import CORS
 import random
 import json
+import os
 import google.generativeai as genai
 
 app = Flask(__name__)
