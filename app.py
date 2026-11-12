@@ -1,12 +1,17 @@
-
 from flask import Flask, request, jsonify, render_template_string
 from flask_cors import CORS
 import random
+import json
+import google.generativeai as genai
 
 app = Flask(__name__)
 CORS(app)
 
-# --- DATABASE (User ka hisaab) ---
+# --- GEMINI AI CONFIGURATION ---
+# Aapki API Key yahan add hai
+genai.configuregenai.configure(api_key=os.environ.get("GEMINI_API_KEY"))
+
+# --- DATABASE ---
 users = {
     "player1": {
         "coins": 200, 
@@ -15,58 +20,99 @@ users = {
     } 
 }
 
-# --- MASTER QUESTION BANK (Har sawal mein 4 Options hain!) ---
+# --- MASTER QUESTION BANK (Static Questions) ---
 ALL_QUESTIONS = {
     "Computer": [
-        {"id": "c1", "q": "HTML ka full form kya hai?", "options": ["Hyper Text Markup Language", "High Text Language", "Hyper Tabular", "Home Tool Markup"], "ans": 0},
+        {"id": "c1", "q": "HTML ka full form kya hai?", "options": ["Hyper Text Markup Language", "High Text Language", "Hyper Tabular", "Home Tool"], "ans": 0},
         {"id": "c2", "q": "Computer ka dimaag kaunsa hai?", "options": ["RAM", "CPU", "Monitor", "Hard Disk"], "ans": 1},
         {"id": "c3", "q": "JS mein 'getElementById' kya karta hai?", "options": ["Element dhundna", "File save karna", "Math karna", "Color badalna"], "ans": 0},
-        {"id": "c4", "q": "Windows 11 kis company ka OS hai?", "options": ["Apple", "Google", "Microsoft", "Linux"], "ans": 2},
+        {"id": "c4", "q": "Windows 11 kis company ka hai?", "options": ["Apple", "Google", "Microsoft", "Linux"], "ans": 2},
         {"id": "c5", "q": "1 KB mein kitne Bytes hote hain?", "options": ["1024", "1000", "512", "2048"], "ans": 0},
         {"id": "c6", "q": "CSS ka kaam kya hai?", "options": ["Design karna", "Logic likhna", "Data save karna", "Server chalana"], "ans": 0},
         {"id": "c7", "q": "Python kis type ki language hai?", "options": ["Programming", "Markup", "Database", "Hardware"], "ans": 0},
-        {"id": "c8", "q": "Sabse pehla computer virus kab aaya?", "options": ["1971", "1981", "1991", "2001"], "ans": 0},
+        {"id": "c8", "q": "Pehla computer virus kab aaya?", "options": ["1971", "1981", "1991", "2001"], "ans": 0},
         {"id": "c9", "q": "RAM ka full form kya hai?", "options": ["Random Access Memory", "Read Access Memory", "Real Action Memory", "Rapid Access Memory"], "ans": 0},
         {"id": "c10", "q": "Computer ka father kise kaha jata hai?", "options": ["Bill Gates", "Charles Babbage", "Steve Jobs", "Mark Zuckerberg"], "ans": 1}
     ],
     "General Knowledge": [
         {"id": "g1", "q": "Bharat ki rajdhani kya hai?", "options": ["Mumbai", "New Delhi", "Kolkata", "Chennai"], "ans": 1},
         {"id": "g2", "q": "Sabse bada mahasagar kaunsa hai?", "options": ["Atlantic", "Indian", "Pacific", "Arctic"], "ans": 2},
-        {"id": "g3", "q": "Bharat ka rashtriya pakshi kaunsa hai?", "options": ["Kauwa", "Mor", "Tota", "Kabootar"], "ans": 1},
-        {"id": "g4", "q": "Australia ki rajdhani kya hai?", "options": ["Sydney", "Canberra", "Melbourne", "Perth"], "ans": 1},
-        {"id": "g5", "q": "Duniya ka sabse uncha parvat kaunsa hai?", "options": ["K2", "Mount Everest", "Kanchenjunga", "Makalu"], "ans": 1},
+        {"id": "g3", "q": "Bharat ka rashtriya pakshi?", "options": ["Kauwa", "Mor", "Tota", "Kabootar"], "ans": 1},
+        {"id": "g4", "q": "Australia ki rajdhani?", "options": ["Sydney", "Canberra", "Melbourne", "Perth"], "ans": 1},
+        {"id": "g5", "q": "Duniya ka sabse uncha parvat?", "options": ["K2", "Mount Everest", "Kanchenjunga", "Makalu"], "ans": 1},
         {"id": "g6", "q": "Bharat mein kitne rajya hain?", "options": ["27", "28", "29", "30"], "ans": 1},
         {"id": "g7", "q": "Japan ki currency kya hai?", "options": ["Yuan", "Yen", "Won", "Dollar"], "ans": 1},
-        {"id": "g8", "q": "Duniya ka sabse bada desert kaunsa hai?", "options": ["Sahara", "Thar", "Gobi", "Antarctic"], "ans": 0},
-        {"id": "g9", "q": "Bharat ka rashtriya pashu kaunsa hai?", "options": ["Sher", "Bagh", "Hathi", "Gaay"], "ans": 1},
+        {"id": "g8", "q": "Duniya ka sabse bada desert?", "options": ["Sahara", "Thar", "Gobi", "Antarctic"], "ans": 0},
+        {"id": "g9", "q": "Bharat ka rashtriya pashu?", "options": ["Sher", "Bagh", "Hathi", "Gaay"], "ans": 1},
         {"id": "g10", "q": "Sabse lambi nadi kaunsi hai?", "options": ["Ganga", "Amazon", "Nile", "Yamuna"], "ans": 2}
     ],
     "Science": [
-        {"id": "s1", "q": "Pani ka rasayanik sutra kya hai?", "options": ["CO2", "H2O", "O2", "NaCl"], "ans": 1},
-        {"id": "s2", "q": "Sabse tez daudne wala jaanwar kaunsa hai?", "options": ["Sher", "Cheetah", "Ghoda", "Kutta"], "ans": 1},
-        {"id": "s3", "q": "Maanav sharir mein kitni haddiyan hoti hain?", "options": ["200", "206", "210", "250"], "ans": 1},
-        {"id": "s4", "q": "Surya se sabse nazdeek grah kaunsa hai?", "options": ["Earth", "Mercury", "Venus", "Mars"], "ans": 1},
-        {"id": "s5", "q": "Bijli ka aavishkar kisne kiya?", "options": ["Newton", "Benjamin Franklin", "Nikola Tesla", "Einstein"], "ans": 1},
-        {"id": "s6", "q": "Duniya ka sabse bada planet kaunsa hai?", "options": ["Earth", "Jupiter", "Saturn", "Neptune"], "ans": 1},
-        {"id": "s7", "q": "Vayu mein oxygen kitna pratishat hai?", "options": ["21%", "50%", "10%", "78%"], "ans": 0},
+        {"id": "s1", "q": "Pani ka rasayanik sutra?", "options": ["CO2", "H2O", "O2", "NaCl"], "ans": 1},
+        {"id": "s2", "q": "Sabse tez daudne wala jaanwar?", "options": ["Sher", "Cheetah", "Ghoda", "Kutta"], "ans": 1},
+        {"id": "s3", "q": "Maanav sharir mein kitni haddiyan?", "options": ["200", "206", "210", "250"], "ans": 1},
+        {"id": "s4", "q": "Surya se sabse nazdeek grah?", "options": ["Earth", "Mercury", "Venus", "Mars"], "ans": 1},
+        {"id": "s5", "q": "Bijli ka aavishkar kisne kiya?", "options": ["Newton", "Franklin", "Tesla", "Einstein"], "ans": 1},
+        {"id": "s6", "q": "Duniya ka sabse bada planet?", "options": ["Earth", "Jupiter", "Saturn", "Neptune"], "ans": 1},
+        {"id": "s7", "q": "Vayu mein oxygen kitna hai?", "options": ["21%", "50%", "10%", "78%"], "ans": 0},
         {"id": "s8", "q": "Light ki speed kitni hai?", "options": ["3 Lakh km/s", "1 Lakh km/s", "5 Lakh km/s", "10 Lakh km/s"], "ans": 0},
-        {"id": "s9", "q": "Duniya ka sabse chhota jeev kaunsa hai?", "options": ["Virus", "Bacteria", "Amoeba", "Fungi"], "ans": 0},
+        {"id": "s9", "q": "Duniya ka sabse chhota jeev?", "options": ["Virus", "Bacteria", "Amoeba", "Fungi"], "ans": 0},
         {"id": "s10", "q": "Khoon ka rang laal kyun hota hai?", "options": ["Iron", "Calcium", "Sodium", "Potassium"], "ans": 0}
     ],
     "History": [
         {"id": "h1", "q": "Bharat ko azaadi kab mili?", "options": ["1945", "1947", "1950", "1942"], "ans": 1},
         {"id": "h2", "q": "Taj Mahal kisne banwaya?", "options": ["Akbar", "Shah Jahan", "Babur", "Humayun"], "ans": 1},
-        {"id": "h3", "q": "Bharat ka pehla Pradhan Mantri kaun tha?", "options": ["Nehru", "Patel", "Gandhi", "Ambedkar"], "ans": 0},
-        {"id": "h4", "q": "Jhansi ki Rani ka naam kya tha?", "options": ["Lakshmi Bai", "Rani Padmavati", "Razia Sultan", "Rani Ahilya"], "ans": 0},
-        {"id": "h5", "q": "Mahabharat kisne likhi thi?", "options": ["Valmiki", "Ved Vyas", "Tulsidas", "Kalidas"], "ans": 1},
-        {"id": "h6", "q": "Dandi March kab hua tha?", "options": ["1930", "1942", "1920", "1919"], "ans": 0},
-        {"id": "h7", "q": "Mughal samrajya ka sansthapak kaun tha?", "options": ["Akbar", "Babur", "Humayun", "Shah Jahan"], "ans": 1},
-        {"id": "h8", "q": "Ashoka ne kis dharm ko apnaya?", "options": ["Hindu", "Buddhism", "Jain", "Sikh"], "ans": 1},
-        {"id": "h9", "q": "Kalinga Yudh kisne jeeta tha?", "options": ["Ashoka", "Chandragupta", "Samudragupta", "Harsha"], "ans": 0},
-        {"id": "h10", "q": "Bharat ka pehla rashtrapati kaun tha?", "options": ["Rajendra Prasad", "Nehru", "Radhakrishnan", "Zakir Hussain"], "ans": 0}
+        {"id": "h3", "q": "Bharat ka pehla PM kaun tha?", "options": ["Nehru", "Patel", "Gandhi", "Ambedkar"], "ans": 0},
+        {"id": "h4", "q": "Jhansi ki Rani ka naam?", "options": ["Lakshmi Bai", "Padmavati", "Razia Sultan", "Ahilya"], "ans": 0},
+        {"id": "h5", "q": "Mahabharat kisne likhi?", "options": ["Valmiki", "Ved Vyas", "Tulsidas", "Kalidas"], "ans": 1}
     ]
 }
 ALL_QUESTIONS["Mix (All)"] = ALL_QUESTIONS["Computer"] + ALL_QUESTIONS["General Knowledge"] + ALL_QUESTIONS["Science"] + ALL_QUESTIONS["History"]
+
+# --- DYNAMIC MATH GENERATOR ---
+def generate_math_questions(num=9):
+    questions = []
+    for i in range(num):
+        a = random.randint(5, 50)
+        b = random.randint(5, 50)
+        op = random.choice(['+', '-', '*'])
+        if op == '+': ans = a + b
+        elif op == '-': ans = a - b
+        else: ans = a * b
+        
+        correct_ans_str = str(ans)
+        options = [correct_ans_str]
+        while len(options) < 4:
+            wrong = ans + random.randint(-10, 10)
+            if str(wrong) not in options and wrong != ans:
+                options.append(str(wrong))
+        random.shuffle(options)
+        ans_index = options.index(correct_ans_str)
+        
+        questions.append({
+            "id": f"m{i}_{random.randint(1000,9999)}",
+            "q": f"Calculate: {a} {op} {b} = ?",
+            "options": options,
+            "ans": ans_index
+        })
+    return questions
+
+# --- AI QUESTION GENERATOR ---
+def generate_ai_questions(category):
+    try:
+        # Gemini 1.5 Flash model use kar rahe hain (free tier ke liye best)
+        model = genai.GenerativeModel('gemini-1.5-flash')
+        prompt = f"Generate 9 multiple-choice questions for a quiz on the topic '{category}'. Provide the response STRICTLY as a JSON list of dictionaries. Each dictionary must have keys: 'q' (question string), 'options' (list of exactly 4 string choices), and 'ans' (integer index 0, 1, 2, or 3 for the correct option). Do not add any markdown formatting like ```json, just output the raw JSON array."
+        
+        response = model.generate_content(prompt)
+        text = response.text.replace("```json", "").replace("```", "").strip()
+        questions = json.loads(text)
+        
+        for i, q in enumerate(questions):
+            q["id"] = f"ai_{random.randint(1000,9999)}_{i}"
+        return questions
+    except Exception as e:
+        print("AI Error:", e)
+        return []
 
 # --- FRONTEND (HTML + JS + CSS) ---
 HTML_CODE = """
@@ -75,8 +121,9 @@ HTML_CODE = """
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>KBC Ultimate Pro Max</title>
-  <style><link rel="manifest" href="/manifest.json">
+  <title>KBC Ultimate AI</title>
+  <link rel="manifest" href="/manifest.json">
+  <style>
     @import url('https://fonts.googleapis.com/css2?family=Teko:wght@400;600&display=swap');
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Teko', sans-serif; user-select: none; }
     body { background: #02040a; color: white; display: flex; justify-content: center; align-items: center; height: 100vh; overflow: hidden; background: radial-gradient(circle, #0a1128 0%, #000 100%); }
@@ -87,9 +134,7 @@ HTML_CODE = """
       box-shadow: 0 0 50px rgba(241, 196, 15, 0.3);
     }
     
-    /* Main Area */
     .main-area { flex: 1; position: relative; display: flex; flex-direction: column; padding: 20px; }
-    
     .top-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
     .quit-btn { background: #e74c3c; color: white; border: none; padding: 8px 20px; border-radius: 20px; font-size: 18px; cursor: pointer; font-weight: bold; box-shadow: 0 0 10px #e74c3c; }
     .timer-circle {
@@ -100,7 +145,6 @@ HTML_CODE = """
     }
     @keyframes pulse { from { transform: scale(1); } to { transform: scale(1.05); } }
     
-    /* Lifelines */
     .lifelines { display: flex; gap: 15px; margin-bottom: 20px; }
     .lifeline-btn {
       width: 60px; height: 60px; border-radius: 50%; border: 2px solid #3498db;
@@ -112,7 +156,6 @@ HTML_CODE = """
     .lifeline-btn:hover { background: rgba(52, 152, 219, 0.6); transform: scale(1.1); box-shadow: 0 0 25px #3498db; }
     .lifeline-btn:disabled { border-color: #444; color: #444; pointer-events: none; opacity: 0.3; box-shadow: none; }
 
-    /* Quiz Area */
     .quiz-area { flex: 1; display: flex; flex-direction: column; justify-content: center; }
     .question-box {
       background: linear-gradient(90deg, rgba(0,0,0,0.8), rgba(26, 42, 108, 0.8), rgba(0,0,0,0.8));
@@ -132,7 +175,6 @@ HTML_CODE = """
     .option.wrong { background: #e74c3c !important; border-color: #fff; color: #fff; box-shadow: 0 0 25px #e74c3c; }
     .option.hidden { visibility: hidden; }
 
-    /* Money Ladder */
     .money-ladder {
       width: 200px; background: rgba(0,0,0,0.7); border-left: 2px solid #f1c40f;
       padding: 10px; display: flex; flex-direction: column-reverse; justify-content: flex-start;
@@ -146,7 +188,6 @@ HTML_CODE = """
     .ladder-item.milestone { color: #2ecc71; font-weight: bold; }
     .ladder-item.milestone.active { color: #000; background: #2ecc71; box-shadow: 0 0 10px #2ecc71;}
 
-    /* Overlays */
     .overlay {
       position: absolute; top: 0; left: 0; width: 100%; height: 100%;
       background: rgba(0,0,0,0.95); display: flex; flex-direction: column; justify-content: center; align-items: center;
@@ -176,9 +217,8 @@ HTML_CODE = """
 
   <div class="game-container">
     
-    <!-- 1. Main Menu & Shop -->
     <div class="overlay" id="menuScreen">
-      <h2>KBC Ultimate</h2>
+      <h2>KBC Ultimate AI</h2>
       <div style="font-size: 24px; margin-bottom: 10px;">🪙 Coins: <b id="coinBalance" style="color:#f1c40f">0</b></div>
       
       <div class="shop-grid">
@@ -197,13 +237,11 @@ HTML_CODE = """
       <button class="btn" style="margin-top: 30px;" onclick="showCategories()">Play KBC</button>
     </div>
 
-    <!-- 2. Category Selection -->
     <div class="overlay hidden" id="categoryScreen">
       <h2>Select Category</h2>
       <div class="shop-grid" id="categoryGrid"></div>
     </div>
 
-    <!-- 3. Main Game Area -->
     <div class="main-area hidden" id="mainGameArea">
       <div class="top-bar">
         <button class="quit-btn" id="quitBtn">Quit</button>
@@ -223,10 +261,8 @@ HTML_CODE = """
       </div>
     </div>
 
-    <!-- Money Ladder Sidebar -->
     <div class="money-ladder hidden" id="moneyLadder"></div>
 
-    <!-- 4. Result Screen -->
     <div class="overlay hidden" id="resultScreen">
       <h2 id="resultTitle">Game Over</h2>
       <p>Tumne jeete: <span id="finalMoney" style="color:#2ecc71">₹ 0</span></p>
@@ -236,7 +272,6 @@ HTML_CODE = """
   </div>
 
   <script>
-    // --- AUDIO ENGINE ---
     let audioCtx;
     function initAudio() { if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)(); }
     function playTone(freq, type, duration, vol=0.1) {
@@ -254,7 +289,6 @@ HTML_CODE = """
       win: () => { [400,500,600,800].forEach((f,i)=> setTimeout(()=>playTone(f,'sine',0.3), i*150)); }
     };
 
-    // --- DATA ---
     const user = "player1";
     let userData = {};
     let gameQuestions = [];
@@ -263,7 +297,6 @@ HTML_CODE = """
     
     const prizeMoney = ["₹ 1,000", "₹ 5,000", "₹ 10,000", "₹ 50,000", "₹ 1,00,000", "₹ 5,00,000", "₹ 10,00,000", "₹ 50,00,000", "₹ 1 CRORE"];
 
-    // --- 1. FETCH DATA & INIT ---
     function fetchData() {
       fetch('/api/get_data/' + user)
         .then(res => res.json())
@@ -290,9 +323,8 @@ HTML_CODE = """
       });
     }
 
-    // --- 2. ADS & SHOP ---
     function watchAd() {
-      let videoLink = 
+      let videoLink = "https://google.com"; // Yahan asli ad link daalna
       alert("Video khul rahi hai. 10 second baad wapas aana.");
       window.open(videoLink, '_blank');
 
@@ -313,13 +345,15 @@ HTML_CODE = """
       });
     }
 
-    // --- 3. GAME FLOW & 80/20 ALGORITHM ---
     function showCategories() {
       document.getElementById("menuScreen").classList.add("hidden");
       document.getElementById("categoryScreen").classList.remove("hidden");
       const grid = document.getElementById("categoryGrid");
       grid.innerHTML = "";
-      const cats = ["Computer", "General Knowledge", "Science", "History", "Mix (All)"];
+      
+      // Naya AI wala option yahan add hai
+      const cats = ["Computer", "General Knowledge", "Science", "History", "Mix (All)", "Dynamic Math", "AI Generated (Infinite)"];
+      
       cats.forEach(cat => {
         const btn = document.createElement("button");
         btn.className = "btn btn-blue"; btn.style.fontSize = "20px"; btn.innerText = cat;
@@ -342,6 +376,8 @@ HTML_CODE = """
           buildLadder();
           initAudio();
           loadQuestion();
+        } else {
+          alert("Kuch error aaya hai. Dobara try karo.");
         }
       });
     }
@@ -380,7 +416,7 @@ HTML_CODE = """
         if (timeLeft <= 0) { clearInterval(timerInterval); endGame("timeout"); }
       }, 1000);
     }
-f
+
     function checkAnswer(selected, el) {
       if (!canClick) return;
       canClick = false; clearInterval(timerInterval);
@@ -396,7 +432,6 @@ f
       }
     }
 
-    // --- 4. LIFELINES ---
     function useLifeline(type) {
       if (userData.lifelines[type] <= 0) { alert("Lifeline khatam! Pehle kharido."); return; }
       if (!canClick) return;
@@ -414,7 +449,7 @@ f
             document.getElementById("opt-" + wrongs[0]).classList.add("hidden");
             document.getElementById("opt-" + wrongs[1]).classList.add("hidden");
           } else if (type === 'audience') {
-            alert(`Audience Poll:\\nOption ${q.ans} ko sabse zyada (60%) votes mile hain!`);
+            alert(`Audience Poll:\nOption ${q.ans} ko sabse zyada (60%) votes mile hain!`);
           } else if (type === 'phone') {
             alert(`Friend bolta hai: "Mujhe lagta hai sahi jawab Option ${q.ans} hai!"`);
           } else if (type === 'expert') {
@@ -424,7 +459,6 @@ f
       });
     }
 
-    // --- 5. END GAME ---
     document.getElementById("quitBtn").onclick = () => { if (confirm("Quit karke paise lekar jao?")) endGame("quit"); };
 
     function endGame(reason) {
@@ -457,6 +491,25 @@ f
 @app.route('/')
 def home(): return render_template_string(HTML_CODE)
 
+@app.route('/manifest.json')
+def manifest():
+    return jsonify({
+        "name": "KBC Game",
+        "short_name": "KBC Game",
+        "start_url": "/",
+        "display": "standalone",
+        "background_color": "#02040a",
+        "theme_color": "#f1c40f",
+        "description": "Play KBC Quiz and win coins!",
+        "icons": [
+            {
+                "src": "https://raw.githubusercontent.com/ayannuman800-del/kbc-game/main/1794342592618.png",
+                "sizes": "512x512",
+                "type": "image/png"
+            }
+        ]
+    })
+
 @app.route('/api/get_data/<username>', methods=['GET'])
 def get_data(username):
     if username in users: return jsonify(users[username])
@@ -469,11 +522,25 @@ def start_game():
     category = data.get('category')
     
     if username not in users: return jsonify({"status": "error"})
-    
+
+    # --- AI GENERATOR CHECK ---
+    if category == "AI Generated (Infinite)":
+        ai_qs = generate_ai_questions("Computer, Science, History, or General Knowledge")
+        if ai_qs and len(ai_qs) > 0:
+            return jsonify({"status": "success", "questions": ai_qs})
+        else:
+            # Agar AI fail ho jaye, toh Mix sawal de do
+            category = "Mix (All)"
+
+    # --- DYNAMIC MATH CHECK ---
+    if category == "Dynamic Math":
+        final_questions = generate_math_questions(9)
+        return jsonify({"status": "success", "questions": final_questions})
+
+    # --- STATIC QUESTION BANK LOGIC (80/20) ---
     seen_ids = users[username]["seen_questions"]
     category_pool = ALL_QUESTIONS.get(category, ALL_QUESTIONS["Mix (All)"])
     
-    # --- 20% / 80% ALGORITHM ---
     new_pool = [q for q in category_pool if q["id"] not in seen_ids]
     old_pool = [q for q in category_pool if q["id"] in seen_ids]
 
@@ -532,24 +599,6 @@ def use_lifeline():
         users[username]["lifelines"][life_type] -= 1
         return jsonify({"status": "success"})
     return jsonify({"status": "error"})
-@app.route('/manifest.json')
-def manifest():
-    return jsonify({
-        "name": "KBC Game",
-        "short_name": "KBC Game",
-        "start_url": "/",
-        "display": "standalone",
-        "background_color": "#02040a",
-        "theme_color": "#f1c40f",
-        "description": "Play KBC Quiz and win coins!",
-        "icons": [
-            {
-                "src": "https://raw.githubusercontent.com/ayannuman800-del/kbc-game/main/1794342592618.png",
-                "sizes": "512x512",
-                "type": "image/png"
-            }
-        ]
-    })
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000, debug=True
+    app.run(host='0.0.0.0', port=5000, debug=True)
