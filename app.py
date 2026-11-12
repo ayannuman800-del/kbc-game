@@ -9,8 +9,7 @@ CORS(app)
 
 # --- GEMINI AI CONFIGURATION ---
 # Aapki API Key yahan add hai
-genai.configuregenai.configure(api_key=os.environ.get("GEMINI_API_KEY"))
-
+genai.configure(api_key=os.environ.get("GEMINI_API_KEY"))
 # --- DATABASE ---
 users = {
     "player1": {
