@@ -324,7 +324,7 @@ HTML_CODE = """
     }
 
     function watchAd() {
-      let videoLink = "https://google.com"; // Yahan asli ad link daalna
+      let videoLink = "https://asiafilm.org/4/23852721a9ede5c4d23ead1ed92dadc3"; // Yahan asli ad link daalna
       alert("Video khul rahi hai. 10 second baad wapas aana.");
       window.open(videoLink, '_blank');
 
