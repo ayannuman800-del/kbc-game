@@ -72,10 +72,10 @@ REAL_QUESTIONS = {
     ]
 }
 
-# --- OPTIONS SHUFFLER (To ensure correct answer is random A,B,C,D) ---
+# --- OPTIONS SHUFFLER (Fixing the ID Bug Here) ---
 def prepare_questions(category_pool):
     final_qs = []
-    for q_data in category_pool:
+    for idx, q_data in enumerate(category_pool):
         correct = q_data['correct']
         wrongs = q_data['wrong'][:]
         
@@ -84,6 +84,7 @@ def prepare_questions(category_pool):
         
         ans_idx = options.index(correct)
         final_qs.append({
+            "id": f"real_{idx}_{random.randint(1000,9999)}", # <-- ID ADDED HERE
             "q": q_data['q'],
             "options": options,
             "ans": ans_idx
@@ -446,6 +447,8 @@ HTML_CODE = """
         } else {
           alert("Kuch error aaya hai. Dobara try karo.");
         }
+      }).catch(err => {
+        alert("Server error! Please wait and try again.");
       });
     }
 
@@ -496,14 +499,18 @@ HTML_CODE = """
       if (selected === q.ans) {
         el.classList.add("correct"); sounds.correct();
         
-        // CONFETTI ANIMATION
-        confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
+        // CONFETTI ANIMATION (Safe Check)
+        if (typeof confetti === 'function') {
+            confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
+        }
 
         setTimeout(() => { currentQ++; loadQuestion(); }, 1500);
       } else {
         el.classList.add("wrong"); sounds.wrong();
-        document.getElementById("gameContainer").classList.add("shake");
-        setTimeout(() => document.getElementById("gameContainer").classList.remove("shake"), 500);
+        let gContainer = document.getElementById("gameContainer");
+        gContainer.classList.add("shake");
+        setTimeout(() => gContainer.classList.remove("shake"), 500);
+        
         setTimeout(() => document.getElementById("opt-" + q.ans).classList.add("correct"), 500);
         setTimeout(() => showWrongPopup(), 1500);
       }
@@ -533,7 +540,7 @@ HTML_CODE = """
       let timerDisplay = document.getElementById("adTimerDisplay");
       btn.disabled = true;
       
-      // AD TIMER SET TO 60 SECONDS (Change this to 30 or 45 if needed)
+      // AD TIMER SET TO 60 SECONDS
       let waitTime = 60; 
       timerDisplay.style.display = "block";
       timerDisplay.innerText = waitTime;
