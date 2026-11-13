@@ -540,8 +540,8 @@ HTML_CODE = """
       let timerDisplay = document.getElementById("adTimerDisplay");
       btn.disabled = true;
       
-      // AD TIMER SET TO 60 SECONDS
-      let waitTime = 60; 
+      // AD TIMER SET TO 20 SECONDS
+      let waitTime = 20; 
       timerDisplay.style.display = "block";
       timerDisplay.innerText = waitTime;
       document.getElementById("adWaitText").innerText = `Ad dekh rahe hain, kripya wait karein...`;
