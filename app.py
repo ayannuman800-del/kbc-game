@@ -20,43 +20,83 @@ users = {
     } 
 }
 
-# --- QUESTION BANK (500+ Auto-Generated + Manual) ---
-ALL_QUESTIONS = {"Computer": [], "General Knowledge": [], "Science": [], "History": []}
+# --- MASTER QUESTION BANK (Real Questions) ---
+REAL_QUESTIONS = {
+    "General Knowledge": [
+        {"q": "Bharat ki rajdhani kya hai?", "correct": "New Delhi", "wrong": ["Mumbai", "Kolkata", "Chennai"]},
+        {"q": "Sabse bada mahasagar kaunsa hai?", "correct": "Pacific Ocean", "wrong": ["Atlantic Ocean", "Indian Ocean", "Arctic Ocean"]},
+        {"q": "Bharat ka rashtriya pakshi kaunsa hai?", "correct": "Mor", "wrong": ["Kauwa", "Tota", "Kabootar"]},
+        {"q": "Duniya ka sabse uncha parvat kaunsa hai?", "correct": "Mount Everest", "wrong": ["K2", "Kanchenjunga", "Makalu"]},
+        {"q": "Bharat mein kitne rajya hain?", "correct": "28", "wrong": ["27", "29", "30"]},
+        {"q": "Japan ki currency kya hai?", "correct": "Yen", "wrong": ["Yuan", "Won", "Dollar"]},
+        {"q": "Duniya ka sabse bada desert kaunsa hai?", "correct": "Sahara", "wrong": ["Thar", "Gobi", "Antarctic"]},
+        {"q": "Bharat ka rashtriya pashu kaunsa hai?", "correct": "Bagh", "wrong": ["Sher", "Hathi", "Gaay"]},
+        {"q": "Sabse lambi nadi kaunsi hai?", "correct": "Nile", "wrong": ["Ganga", "Amazon", "Yamuna"]},
+        {"q": "Australia ki rajdhani kya hai?", "correct": "Canberra", "wrong": ["Sydney", "Melbourne", "Perth"]}
+    ],
+    "Science": [
+        {"q": "Pani ka rasayanik sutra kya hai?", "correct": "H2O", "wrong": ["CO2", "O2", "NaCl"]},
+        {"q": "Sabse tez daudne wala jaanwar kaunsa hai?", "correct": "Cheetah", "wrong": ["Sher", "Ghoda", "Kutta"]},
+        {"q": "Maanav sharir mein kitni haddiyan hoti hain?", "correct": "206", "wrong": ["200", "210", "250"]},
+        {"q": "Surya se sabse nazdeek grah kaunsa hai?", "correct": "Mercury", "wrong": ["Earth", "Venus", "Mars"]},
+        {"q": "Bijli ka aavishkar kisne kiya?", "correct": "Benjamin Franklin", "wrong": ["Newton", "Nikola Tesla", "Einstein"]},
+        {"q": "Duniya ka sabse bada planet kaunsa hai?", "correct": "Jupiter", "wrong": ["Earth", "Saturn", "Neptune"]},
+        {"q": "Vayu mein oxygen kitna pratishat hai?", "correct": "21%", "wrong": ["50%", "10%", "78%"]},
+        {"q": "Light ki speed kitni hai?", "correct": "3 Lakh km/s", "wrong": ["1 Lakh km/s", "5 Lakh km/s", "10 Lakh km/s"]},
+        {"q": "Duniya ka sabse chhota jeev kaunsa hai?", "correct": "Virus", "wrong": ["Bacteria", "Amoeba", "Fungi"]},
+        {"q": "Khoon ka rang laal kyun hota hai?", "correct": "Iron", "wrong": ["Calcium", "Sodium", "Potassium"]}
+    ],
+    "Computer": [
+        {"q": "HTML ka full form kya hai?", "correct": "Hyper Text Markup Language", "wrong": ["High Text Language", "Hyper Tabular", "Home Tool"]},
+        {"q": "Computer ka dimaag kaunsa hai?", "correct": "CPU", "wrong": ["RAM", "Monitor", "Hard Disk"]},
+        {"q": "JS mein 'getElementById' kya karta hai?", "correct": "Element dhundna", "wrong": ["File save karna", "Math karna", "Color badalna"]},
+        {"q": "Windows 11 kis company ka hai?", "correct": "Microsoft", "wrong": ["Apple", "Google", "Linux"]},
+        {"q": "1 KB mein kitne Bytes hote hain?", "correct": "1024", "wrong": ["1000", "512", "2048"]},
+        {"q": "CSS ka kaam kya hai?", "correct": "Design karna", "wrong": ["Logic likhna", "Data save karna", "Server chalana"]},
+        {"q": "Python kis type ki language hai?", "correct": "Programming", "wrong": ["Markup", "Database", "Hardware"]},
+        {"q": "Pehla computer virus kab aaya?", "correct": "1971", "wrong": ["1981", "1991", "2001"]},
+        {"q": "RAM ka full form kya hai?", "correct": "Random Access Memory", "wrong": ["Read Access Memory", "Real Action Memory", "Rapid Access Memory"]},
+        {"q": "Computer ka father kise kaha jata hai?", "correct": "Charles Babbage", "wrong": ["Bill Gates", "Steve Jobs", "Mark Zuckerberg"]}
+    ],
+    "History": [
+        {"q": "Bharat ko azaadi kab mili?", "correct": "1947", "wrong": ["1945", "1950", "1942"]},
+        {"q": "Taj Mahal kisne banwaya?", "correct": "Shah Jahan", "wrong": ["Akbar", "Babur", "Humayun"]},
+        {"q": "Bharat ka pehla Pradhan Mantri kaun tha?", "correct": "Nehru", "wrong": ["Patel", "Gandhi", "Ambedkar"]},
+        {"q": "Jhansi ki Rani ka naam kya tha?", "correct": "Lakshmi Bai", "wrong": ["Padmavati", "Razia Sultan", "Ahilya"]},
+        {"q": "Mahabharat kisne likhi thi?", "correct": "Ved Vyas", "wrong": ["Valmiki", "Tulsidas", "Kalidas"]},
+        {"q": "Dandi March kab hua tha?", "correct": "1930", "wrong": ["1942", "1920", "1919"]},
+        {"q": "Mughal samrajya ka sansthapak kaun tha?", "correct": "Babur", "wrong": ["Akbar", "Humayun", "Shah Jahan"]},
+        {"q": "Ashoka ne kis dharm ko apnaya?", "correct": "Buddhism", "wrong": ["Hindu", "Jain", "Sikh"]},
+        {"q": "Kalinga Yudh kisne jeeta tha?", "correct": "Ashoka", "wrong": ["Chandragupta", "Samudragupta", "Harsha"]},
+        {"q": "Bharat ka pehla rashtrapati kaun tha?", "correct": "Rajendra Prasad", "wrong": ["Nehru", "Radhakrishnan", "Zakir Hussain"]}
+    ]
+}
 
-# Manual Questions (Top quality)
-ALL_QUESTIONS["General Knowledge"].extend([
-    {"id": "g1", "q": "Bharat ki rajdhani kya hai?", "options": ["Mumbai", "New Delhi", "Kolkata", "Chennai"], "ans": 1},
-    {"id": "g2", "q": "Sabse bada mahasagar kaunsa hai?", "options": ["Atlantic", "Indian", "Pacific", "Arctic"], "ans": 2},
-    {"id": "g3", "q": "Bharat ka rashtriya pakshi?", "options": ["Kauwa", "Mor", "Tota", "Kabootar"], "ans": 1},
-    {"id": "g4", "q": "Duniya ka sabse uncha parvat?", "options": ["K2", "Mount Everest", "Kanchenjunga", "Makalu"], "ans": 1},
-    {"id": "g5", "q": "Bharat mein kitne rajya hain?", "options": ["27", "28", "29", "30"], "ans": 1},
-    {"id": "g6", "q": "Japan ki currency kya hai?", "options": ["Yuan", "Yen", "Won", "Dollar"], "ans": 1},
-    {"id": "g7", "q": "Duniya ka sabse bada desert?", "options": ["Sahara", "Thar", "Gobi", "Antarctic"], "ans": 0},
-    {"id": "g8", "q": "Bharat ka rashtriya pashu?", "options": ["Sher", "Bagh", "Hathi", "Gaay"], "ans": 1},
-    {"id": "g9", "q": "Sabse lambi nadi kaunsi hai?", "options": ["Ganga", "Amazon", "Nile", "Yamuna"], "ans": 2},
-    {"id": "g10", "q": "Australia ki rajdhani?", "options": ["Sydney", "Canberra", "Melbourne", "Perth"], "ans": 1}
-])
+# --- OPTIONS SHUFFLER (To ensure correct answer is random A,B,C,D) ---
+def prepare_questions(category_pool):
+    final_qs = []
+    for q_data in category_pool:
+        correct = q_data['correct']
+        wrongs = q_data['wrong'][:]
+        
+        options = [correct] + wrongs
+        random.shuffle(options) # Shuffles options randomly
+        
+        ans_idx = options.index(correct)
+        final_qs.append({
+            "q": q_data['q'],
+            "options": options,
+            "ans": ans_idx
+        })
+    return final_qs
 
-# Auto-Generate 500+ Questions
-for i in range(100):
-    ALL_QUESTIONS["General Knowledge"].append({
-        "id": f"gk_auto_{i}", "q": f"General Knowledge Question {i+1}: What is the number after {i*10}?", 
-        "options": [str(i*10+1), str(i*10+2), str(i*10+3), str(i*10+4)], "ans": 0
-    })
-    ALL_QUESTIONS["Science"].append({
-        "id": f"sci_auto_{i}", "q": f"Science Question {i+1}: Element atomic number {i+1} is?", 
-        "options": ["Hydrogen", "Helium", "Lithium", "Carbon"], "ans": 0 if i==0 else 1
-    })
-    ALL_QUESTIONS["Computer"].append({
-        "id": f"comp_auto_{i}", "q": f"Computer Question {i+1}: Binary of {i+1} is?", 
-        "options": [bin(i+1).replace("0b", ""), "101", "110", "111"], "ans": 0
-    })
-    ALL_QUESTIONS["History"].append({
-        "id": f"hist_auto_{i}", "q": f"History Question {i+1}: Year {1900+i} event?", 
-        "options": [str(1900+i), str(1901+i), str(1902+i), str(1903+i)], "ans": 0
-    })
-
-ALL_QUESTIONS["Mix (All)"] = ALL_QUESTIONS["Computer"] + ALL_QUESTIONS["General Knowledge"] + ALL_QUESTIONS["Science"] + ALL_QUESTIONS["History"]
+ALL_QUESTIONS = {
+    "General Knowledge": prepare_questions(REAL_QUESTIONS["General Knowledge"]),
+    "Science": prepare_questions(REAL_QUESTIONS["Science"]),
+    "Computer": prepare_questions(REAL_QUESTIONS["Computer"]),
+    "History": prepare_questions(REAL_QUESTIONS["History"])
+}
+ALL_QUESTIONS["Mix (All)"] = ALL_QUESTIONS["General Knowledge"] + ALL_QUESTIONS["Science"] + ALL_QUESTIONS["Computer"] + ALL_QUESTIONS["History"]
 
 # --- DYNAMIC MATH ---
 def generate_math_questions(num=16):
@@ -91,7 +131,6 @@ def generate_ai_questions(category):
             q["id"] = f"ai_{random.randint(1000,9999)}_{i}"
         return questions
     except Exception as e:
-        print("AI Error:", e)
         return []
 
 # --- FRONTEND ---
@@ -103,6 +142,8 @@ HTML_CODE = """
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>KBC 7 Crore Edition</title>
   <link rel="manifest" href="/manifest.json">
+  <!-- Canvas Confetti Library -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Teko:wght@400;600&display=swap');
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Teko', sans-serif; user-select: none; }
@@ -115,8 +156,6 @@ HTML_CODE = """
     }
     
     .main-area { flex: 1; position: relative; display: flex; flex-direction: column; padding: 15px; }
-    
-    /* Top Bar & Timer */
     .top-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
     .quit-btn { background: #e74c3c; color: white; border: none; padding: 8px 20px; border-radius: 20px; font-size: 18px; cursor: pointer; font-weight: bold; box-shadow: 0 0 10px #e74c3c; }
     
@@ -128,7 +167,6 @@ HTML_CODE = """
     }
     @keyframes pulse { from { transform: scale(1); } to { transform: scale(1.05); } }
     
-    /* NEW: Current Score Display */
     .score-display {
       background: linear-gradient(90deg, #111, #1a2a6c, #111);
       border: 2px solid #f1c40f; border-radius: 15px;
@@ -181,6 +219,10 @@ HTML_CODE = """
     .ladder-item.milestone { color: #2ecc71; font-weight: bold; }
     .ladder-item.milestone.active { color: #000; background: #2ecc71; box-shadow: 0 0 10px #2ecc71;}
 
+    /* Shake Animation */
+    .shake { animation: shake 0.5s; }
+    @keyframes shake { 0% { transform: translate(1px, 1px) rotate(0deg); } 10% { transform: translate(-1px, -2px) rotate(-1deg); } 20% { transform: translate(-3px, 0px) rotate(1deg); } 30% { transform: translate(3px, 2px) rotate(0deg); } 40% { transform: translate(1px, -1px) rotate(1deg); } 50% { transform: translate(-1px, 2px) rotate(-1deg); } 60% { transform: translate(-3px, 1px) rotate(0deg); } 70% { transform: translate(3px, 1px) rotate(-1deg); } 80% { transform: translate(-1px, -1px) rotate(1deg); } 90% { transform: translate(1px, 2px) rotate(0deg); } 100% { transform: translate(1px, -2px) rotate(-1deg); } }
+
     .overlay {
       position: absolute; top: 0; left: 0; width: 100%; height: 100%;
       background: rgba(0,0,0,0.95); display: flex; flex-direction: column; justify-content: center; align-items: center;
@@ -199,7 +241,6 @@ HTML_CODE = """
     .shop-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 20px; width: 100%; max-width: 500px; }
     .shop-card { background: #111; border: 2px solid #444; border-radius: 10px; padding: 15px; text-align: center; }
 
-    /* Wrong Answer Modal */
     .modal-box {
       background: #1a1a2e; border: 3px solid #e74c3c; border-radius: 20px; padding: 30px; text-align: center;
       box-shadow: 0 0 40px rgba(231, 76, 60, 0.5); max-width: 450px; width: 90%;
@@ -218,7 +259,7 @@ HTML_CODE = """
 </head>
 <body>
 
-  <div class="game-container">
+  <div class="game-container" id="gameContainer">
     
     <div class="overlay" id="menuScreen">
       <h2>KBC 7 Crore Edition</h2>
@@ -251,7 +292,6 @@ HTML_CODE = """
         <div class="timer-circle" id="timerDisplay">45</div>
       </div>
 
-      <!-- NEW: Live Score Display -->
       <div class="score-display">
         <h3>Aapka Current Prize</h3>
         <div class="current-money" id="currentScore">₹ 0</div>
@@ -273,13 +313,14 @@ HTML_CODE = """
 
     <div class="money-ladder hidden" id="moneyLadder"></div>
 
-    <!-- Wrong Answer Popup -->
     <div class="overlay hidden" id="wrongScreen" style="background: rgba(0,0,0,0.85);">
       <div class="modal-box">
         <h2>❌ Galat Jawab!</h2>
-        <!-- NEW: Show what they are losing -->
         <p>Aapne abhi tak <b style="color:#2ecc71; font-size: 26px;" id="lostPrizeText">₹ 0</b> jeete hain!</p>
         <p style="color: #f1c40f; font-size: 18px;">Ad dekh kar apna ye prize bachayein!</p>
+        
+        <!-- Ad Timer Display -->
+        <h1 id="adTimerDisplay" style="color: #fff; font-size: 60px; margin: 10px 0; display: none;">60</h1>
         
         <button class="btn btn-red" onclick="endGame('wrong')">Go to Home</button>
         <button class="btn btn-blue" id="reviveBtn" onclick="reviveGame()">Watch Ad & Continue</button>
@@ -415,7 +456,6 @@ HTML_CODE = """
       document.getElementById("timerDisplay").innerText = timeLeft;
       document.getElementById("timerDisplay").style.color = "#f1c40f";
       
-      // Update Top Score Display
       let currentWon = currentQ === 0 ? "₹ 0" : prizeMoney[currentQ - 1];
       document.getElementById("currentScore").innerText = currentWon;
       document.getElementById("nextTargetText").innerText = `Next Target: ${prizeMoney[currentQ]}`;
@@ -455,9 +495,15 @@ HTML_CODE = """
       let q = gameQuestions[currentQ];
       if (selected === q.ans) {
         el.classList.add("correct"); sounds.correct();
+        
+        // CONFETTI ANIMATION
+        confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
+
         setTimeout(() => { currentQ++; loadQuestion(); }, 1500);
       } else {
         el.classList.add("wrong"); sounds.wrong();
+        document.getElementById("gameContainer").classList.add("shake");
+        setTimeout(() => document.getElementById("gameContainer").classList.remove("shake"), 500);
         setTimeout(() => document.getElementById("opt-" + q.ans).classList.add("correct"), 500);
         setTimeout(() => showWrongPopup(), 1500);
       }
@@ -465,13 +511,18 @@ HTML_CODE = """
 
     function showWrongPopup() {
       canClick = false;
-      // Show how much they have earned so far
       let currentWon = currentQ === 0 ? "₹ 0" : prizeMoney[currentQ - 1];
       document.getElementById("lostPrizeText").innerText = currentWon;
       
       document.getElementById("wrongScreen").classList.remove("hidden");
-      document.getElementById("reviveBtn").disabled = false;
+      let btn = document.getElementById("reviveBtn");
+      btn.disabled = false;
+      btn.innerText = "Watch Ad & Continue";
       document.getElementById("adWaitText").innerText = "";
+      document.getElementById("adTimerDisplay").style.display = "none";
+      
+      // Reset button action
+      btn.onclick = reviveGame;
     }
 
     function reviveGame() {
@@ -479,16 +530,22 @@ HTML_CODE = """
       window.open(videoLink, '_blank');
       
       let btn = document.getElementById("reviveBtn");
+      let timerDisplay = document.getElementById("adTimerDisplay");
       btn.disabled = true;
-      let waitTime = 15;
-      document.getElementById("adWaitText").innerText = `Ad dekh rahe hain... Kripya ${waitTime} second wait karein.`;
+      
+      // AD TIMER SET TO 60 SECONDS (Change this to 30 or 45 if needed)
+      let waitTime = 60; 
+      timerDisplay.style.display = "block";
+      timerDisplay.innerText = waitTime;
+      document.getElementById("adWaitText").innerText = `Ad dekh rahe hain, kripya wait karein...`;
 
       let adTimer = setInterval(() => {
         waitTime--;
-        if (waitTime > 0) {
-          document.getElementById("adWaitText").innerText = `Ad dekh rahe hain... Kripya ${waitTime} second wait karein.`;
-        } else {
+        timerDisplay.innerText = waitTime;
+        
+        if (waitTime <= 0) {
           clearInterval(adTimer);
+          timerDisplay.style.display = "none";
           document.getElementById("adWaitText").innerText = "✅ Ad pura ho gaya! Ab aap continue kar sakte hain.";
           btn.disabled = false;
           btn.innerText = "Continue Game";
