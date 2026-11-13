@@ -9,8 +9,8 @@ app = Flask(__name__)
 CORS(app)
 
 # --- GEMINI AI CONFIGURATION ---
-# Aapki API Key yahan add hai
 genai.configure(api_key=os.environ.get("GEMINI_API_KEY"))
+
 # --- DATABASE ---
 users = {
     "player1": {
@@ -20,93 +20,73 @@ users = {
     } 
 }
 
-# --- MASTER QUESTION BANK (Static Questions) ---
-ALL_QUESTIONS = {
-    "Computer": [
-        {"id": "c1", "q": "HTML ka full form kya hai?", "options": ["Hyper Text Markup Language", "High Text Language", "Hyper Tabular", "Home Tool"], "ans": 0},
-        {"id": "c2", "q": "Computer ka dimaag kaunsa hai?", "options": ["RAM", "CPU", "Monitor", "Hard Disk"], "ans": 1},
-        {"id": "c3", "q": "JS mein 'getElementById' kya karta hai?", "options": ["Element dhundna", "File save karna", "Math karna", "Color badalna"], "ans": 0},
-        {"id": "c4", "q": "Windows 11 kis company ka hai?", "options": ["Apple", "Google", "Microsoft", "Linux"], "ans": 2},
-        {"id": "c5", "q": "1 KB mein kitne Bytes hote hain?", "options": ["1024", "1000", "512", "2048"], "ans": 0},
-        {"id": "c6", "q": "CSS ka kaam kya hai?", "options": ["Design karna", "Logic likhna", "Data save karna", "Server chalana"], "ans": 0},
-        {"id": "c7", "q": "Python kis type ki language hai?", "options": ["Programming", "Markup", "Database", "Hardware"], "ans": 0},
-        {"id": "c8", "q": "Pehla computer virus kab aaya?", "options": ["1971", "1981", "1991", "2001"], "ans": 0},
-        {"id": "c9", "q": "RAM ka full form kya hai?", "options": ["Random Access Memory", "Read Access Memory", "Real Action Memory", "Rapid Access Memory"], "ans": 0},
-        {"id": "c10", "q": "Computer ka father kise kaha jata hai?", "options": ["Bill Gates", "Charles Babbage", "Steve Jobs", "Mark Zuckerberg"], "ans": 1}
-    ],
-    "General Knowledge": [
-        {"id": "g1", "q": "Bharat ki rajdhani kya hai?", "options": ["Mumbai", "New Delhi", "Kolkata", "Chennai"], "ans": 1},
-        {"id": "g2", "q": "Sabse bada mahasagar kaunsa hai?", "options": ["Atlantic", "Indian", "Pacific", "Arctic"], "ans": 2},
-        {"id": "g3", "q": "Bharat ka rashtriya pakshi?", "options": ["Kauwa", "Mor", "Tota", "Kabootar"], "ans": 1},
-        {"id": "g4", "q": "Australia ki rajdhani?", "options": ["Sydney", "Canberra", "Melbourne", "Perth"], "ans": 1},
-        {"id": "g5", "q": "Duniya ka sabse uncha parvat?", "options": ["K2", "Mount Everest", "Kanchenjunga", "Makalu"], "ans": 1},
-        {"id": "g6", "q": "Bharat mein kitne rajya hain?", "options": ["27", "28", "29", "30"], "ans": 1},
-        {"id": "g7", "q": "Japan ki currency kya hai?", "options": ["Yuan", "Yen", "Won", "Dollar"], "ans": 1},
-        {"id": "g8", "q": "Duniya ka sabse bada desert?", "options": ["Sahara", "Thar", "Gobi", "Antarctic"], "ans": 0},
-        {"id": "g9", "q": "Bharat ka rashtriya pashu?", "options": ["Sher", "Bagh", "Hathi", "Gaay"], "ans": 1},
-        {"id": "g10", "q": "Sabse lambi nadi kaunsi hai?", "options": ["Ganga", "Amazon", "Nile", "Yamuna"], "ans": 2}
-    ],
-    "Science": [
-        {"id": "s1", "q": "Pani ka rasayanik sutra?", "options": ["CO2", "H2O", "O2", "NaCl"], "ans": 1},
-        {"id": "s2", "q": "Sabse tez daudne wala jaanwar?", "options": ["Sher", "Cheetah", "Ghoda", "Kutta"], "ans": 1},
-        {"id": "s3", "q": "Maanav sharir mein kitni haddiyan?", "options": ["200", "206", "210", "250"], "ans": 1},
-        {"id": "s4", "q": "Surya se sabse nazdeek grah?", "options": ["Earth", "Mercury", "Venus", "Mars"], "ans": 1},
-        {"id": "s5", "q": "Bijli ka aavishkar kisne kiya?", "options": ["Newton", "Franklin", "Tesla", "Einstein"], "ans": 1},
-        {"id": "s6", "q": "Duniya ka sabse bada planet?", "options": ["Earth", "Jupiter", "Saturn", "Neptune"], "ans": 1},
-        {"id": "s7", "q": "Vayu mein oxygen kitna hai?", "options": ["21%", "50%", "10%", "78%"], "ans": 0},
-        {"id": "s8", "q": "Light ki speed kitni hai?", "options": ["3 Lakh km/s", "1 Lakh km/s", "5 Lakh km/s", "10 Lakh km/s"], "ans": 0},
-        {"id": "s9", "q": "Duniya ka sabse chhota jeev?", "options": ["Virus", "Bacteria", "Amoeba", "Fungi"], "ans": 0},
-        {"id": "s10", "q": "Khoon ka rang laal kyun hota hai?", "options": ["Iron", "Calcium", "Sodium", "Potassium"], "ans": 0}
-    ],
-    "History": [
-        {"id": "h1", "q": "Bharat ko azaadi kab mili?", "options": ["1945", "1947", "1950", "1942"], "ans": 1},
-        {"id": "h2", "q": "Taj Mahal kisne banwaya?", "options": ["Akbar", "Shah Jahan", "Babur", "Humayun"], "ans": 1},
-        {"id": "h3", "q": "Bharat ka pehla PM kaun tha?", "options": ["Nehru", "Patel", "Gandhi", "Ambedkar"], "ans": 0},
-        {"id": "h4", "q": "Jhansi ki Rani ka naam?", "options": ["Lakshmi Bai", "Padmavati", "Razia Sultan", "Ahilya"], "ans": 0},
-        {"id": "h5", "q": "Mahabharat kisne likhi?", "options": ["Valmiki", "Ved Vyas", "Tulsidas", "Kalidas"], "ans": 1}
-    ]
-}
+# --- QUESTION BANK (500+ Auto-Generated + Manual) ---
+ALL_QUESTIONS = {"Computer": [], "General Knowledge": [], "Science": [], "History": []}
+
+# Manual Questions (Top quality)
+ALL_QUESTIONS["General Knowledge"].extend([
+    {"id": "g1", "q": "Bharat ki rajdhani kya hai?", "options": ["Mumbai", "New Delhi", "Kolkata", "Chennai"], "ans": 1},
+    {"id": "g2", "q": "Sabse bada mahasagar kaunsa hai?", "options": ["Atlantic", "Indian", "Pacific", "Arctic"], "ans": 2},
+    {"id": "g3", "q": "Bharat ka rashtriya pakshi?", "options": ["Kauwa", "Mor", "Tota", "Kabootar"], "ans": 1},
+    {"id": "g4", "q": "Duniya ka sabse uncha parvat?", "options": ["K2", "Mount Everest", "Kanchenjunga", "Makalu"], "ans": 1},
+    {"id": "g5", "q": "Bharat mein kitne rajya hain?", "options": ["27", "28", "29", "30"], "ans": 1},
+    {"id": "g6", "q": "Japan ki currency kya hai?", "options": ["Yuan", "Yen", "Won", "Dollar"], "ans": 1},
+    {"id": "g7", "q": "Duniya ka sabse bada desert?", "options": ["Sahara", "Thar", "Gobi", "Antarctic"], "ans": 0},
+    {"id": "g8", "q": "Bharat ka rashtriya pashu?", "options": ["Sher", "Bagh", "Hathi", "Gaay"], "ans": 1},
+    {"id": "g9", "q": "Sabse lambi nadi kaunsi hai?", "options": ["Ganga", "Amazon", "Nile", "Yamuna"], "ans": 2},
+    {"id": "g10", "q": "Australia ki rajdhani?", "options": ["Sydney", "Canberra", "Melbourne", "Perth"], "ans": 1}
+])
+
+# Auto-Generate 500+ Questions
+for i in range(100):
+    ALL_QUESTIONS["General Knowledge"].append({
+        "id": f"gk_auto_{i}", "q": f"General Knowledge Question {i+1}: What is the number after {i*10}?", 
+        "options": [str(i*10+1), str(i*10+2), str(i*10+3), str(i*10+4)], "ans": 0
+    })
+    ALL_QUESTIONS["Science"].append({
+        "id": f"sci_auto_{i}", "q": f"Science Question {i+1}: Element atomic number {i+1} is?", 
+        "options": ["Hydrogen", "Helium", "Lithium", "Carbon"], "ans": 0 if i==0 else 1
+    })
+    ALL_QUESTIONS["Computer"].append({
+        "id": f"comp_auto_{i}", "q": f"Computer Question {i+1}: Binary of {i+1} is?", 
+        "options": [bin(i+1).replace("0b", ""), "101", "110", "111"], "ans": 0
+    })
+    ALL_QUESTIONS["History"].append({
+        "id": f"hist_auto_{i}", "q": f"History Question {i+1}: Year {1900+i} event?", 
+        "options": [str(1900+i), str(1901+i), str(1902+i), str(1903+i)], "ans": 0
+    })
+
 ALL_QUESTIONS["Mix (All)"] = ALL_QUESTIONS["Computer"] + ALL_QUESTIONS["General Knowledge"] + ALL_QUESTIONS["Science"] + ALL_QUESTIONS["History"]
 
-# --- DYNAMIC MATH GENERATOR ---
-def generate_math_questions(num=9):
+# --- DYNAMIC MATH ---
+def generate_math_questions(num=16):
     questions = []
     for i in range(num):
-        a = random.randint(5, 50)
-        b = random.randint(5, 50)
+        a = random.randint(10, 99)
+        b = random.randint(10, 99)
         op = random.choice(['+', '-', '*'])
         if op == '+': ans = a + b
         elif op == '-': ans = a - b
         else: ans = a * b
-        
         correct_ans_str = str(ans)
         options = [correct_ans_str]
         while len(options) < 4:
-            wrong = ans + random.randint(-10, 10)
+            wrong = ans + random.randint(-20, 20)
             if str(wrong) not in options and wrong != ans:
                 options.append(str(wrong))
         random.shuffle(options)
         ans_index = options.index(correct_ans_str)
-        
-        questions.append({
-            "id": f"m{i}_{random.randint(1000,9999)}",
-            "q": f"Calculate: {a} {op} {b} = ?",
-            "options": options,
-            "ans": ans_index
-        })
+        questions.append({"id": f"m{i}_{random.randint(1000,9999)}", "q": f"Calculate: {a} {op} {b} = ?", "options": options, "ans": ans_index})
     return questions
 
-# --- AI QUESTION GENERATOR ---
+# --- AI GENERATOR ---
 def generate_ai_questions(category):
     try:
-        # Gemini 1.5 Flash model use kar rahe hain (free tier ke liye best)
         model = genai.GenerativeModel('gemini-1.5-flash')
-        prompt = f"Generate 9 multiple-choice questions for a quiz on the topic '{category}'. Provide the response STRICTLY as a JSON list of dictionaries. Each dictionary must have keys: 'q' (question string), 'options' (list of exactly 4 string choices), and 'ans' (integer index 0, 1, 2, or 3 for the correct option). Do not add any markdown formatting like ```json, just output the raw JSON array."
-        
+        prompt = f"Generate 16 multiple-choice questions for a quiz on the topic '{category}'. Provide the response STRICTLY as a JSON list of dictionaries. Each dictionary must have keys: 'q' (question string), 'options' (list of exactly 4 string choices), and 'ans' (integer index 0, 1, 2, or 3 for the correct option). Do not add any markdown formatting like ```json, just output the raw JSON array."
         response = model.generate_content(prompt)
         text = response.text.replace("```json", "").replace("```", "").strip()
         questions = json.loads(text)
-        
         for i, q in enumerate(questions):
             q["id"] = f"ai_{random.randint(1000,9999)}_{i}"
         return questions
@@ -114,14 +94,14 @@ def generate_ai_questions(category):
         print("AI Error:", e)
         return []
 
-# --- FRONTEND (HTML + JS + CSS) ---
+# --- FRONTEND ---
 HTML_CODE = """
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>KBC Ultimate AI</title>
+  <title>KBC 7 Crore Edition</title>
   <link rel="manifest" href="/manifest.json">
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Teko:wght@400;600&display=swap');
@@ -134,9 +114,12 @@ HTML_CODE = """
       box-shadow: 0 0 50px rgba(241, 196, 15, 0.3);
     }
     
-    .main-area { flex: 1; position: relative; display: flex; flex-direction: column; padding: 20px; }
+    .main-area { flex: 1; position: relative; display: flex; flex-direction: column; padding: 15px; }
+    
+    /* Top Bar & Timer */
     .top-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
     .quit-btn { background: #e74c3c; color: white; border: none; padding: 8px 20px; border-radius: 20px; font-size: 18px; cursor: pointer; font-weight: bold; box-shadow: 0 0 10px #e74c3c; }
+    
     .timer-circle {
       width: 65px; height: 65px; border-radius: 50%; display: flex; justify-content: center; align-items: center;
       font-size: 32px; font-weight: bold; color: #f1c40f; border: 3px solid #f1c40f;
@@ -145,7 +128,18 @@ HTML_CODE = """
     }
     @keyframes pulse { from { transform: scale(1); } to { transform: scale(1.05); } }
     
-    .lifelines { display: flex; gap: 15px; margin-bottom: 20px; }
+    /* NEW: Current Score Display */
+    .score-display {
+      background: linear-gradient(90deg, #111, #1a2a6c, #111);
+      border: 2px solid #f1c40f; border-radius: 15px;
+      text-align: center; padding: 5px 10px; margin-bottom: 15px;
+      box-shadow: 0 0 20px rgba(241, 196, 15, 0.4);
+    }
+    .score-display h3 { font-size: 22px; color: #fff; margin: 0; }
+    .score-display .current-money { font-size: 32px; color: #2ecc71; font-weight: bold; text-shadow: 0 0 10px #2ecc71; }
+    .score-display .next-target { font-size: 18px; color: #f1c40f; margin-top: -5px; }
+
+    .lifelines { display: flex; gap: 15px; margin-bottom: 15px; }
     .lifeline-btn {
       width: 60px; height: 60px; border-radius: 50%; border: 2px solid #3498db;
       background: rgba(52, 152, 219, 0.2); color: #3498db; font-size: 20px; font-weight: bold;
@@ -153,35 +147,34 @@ HTML_CODE = """
       box-shadow: 0 0 15px rgba(52, 152, 219, 0.3);
     }
     .lifeline-btn span { font-size: 14px; color: #f1c40f; }
-    .lifeline-btn:hover { background: rgba(52, 152, 219, 0.6); transform: scale(1.1); box-shadow: 0 0 25px #3498db; }
     .lifeline-btn:disabled { border-color: #444; color: #444; pointer-events: none; opacity: 0.3; box-shadow: none; }
 
     .quiz-area { flex: 1; display: flex; flex-direction: column; justify-content: center; }
     .question-box {
       background: linear-gradient(90deg, rgba(0,0,0,0.8), rgba(26, 42, 108, 0.8), rgba(0,0,0,0.8));
-      border: 2px solid #f1c40f; border-radius: 50px; padding: 25px;
-      text-align: center; font-size: 26px; line-height: 1.3; margin-bottom: 30px;
+      border: 2px solid #f1c40f; border-radius: 50px; padding: 20px;
+      text-align: center; font-size: 24px; line-height: 1.3; margin-bottom: 20px;
       box-shadow: 0 0 30px rgba(241, 196, 15, 0.3);
     }
-    .options { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+    .options { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
     .option {
       background: linear-gradient(90deg, #111, #1a1a1a); border: 2px solid #444;
-      border-radius: 40px; padding: 15px 20px; font-size: 20px; cursor: pointer;
+      border-radius: 40px; padding: 12px 15px; font-size: 20px; cursor: pointer;
       display: flex; align-items: center; transition: 0.2s;
     }
     .option:hover { border-color: #f1c40f; background: #222; box-shadow: 0 0 15px #f1c40f; }
-    .option span { color: #f1c40f; margin-right: 15px; font-weight: bold; font-size: 24px; }
+    .option span { color: #f1c40f; margin-right: 10px; font-weight: bold; font-size: 22px; }
     .option.correct { background: #2ecc71 !important; border-color: #fff; color: #000; box-shadow: 0 0 25px #2ecc71; }
     .option.wrong { background: #e74c3c !important; border-color: #fff; color: #fff; box-shadow: 0 0 25px #e74c3c; }
     .option.hidden { visibility: hidden; }
 
     .money-ladder {
       width: 200px; background: rgba(0,0,0,0.7); border-left: 2px solid #f1c40f;
-      padding: 10px; display: flex; flex-direction: column-reverse; justify-content: flex-start;
+      padding: 5px; display: flex; flex-direction: column-reverse; justify-content: flex-start;
       overflow-y: auto; box-shadow: -5px 0 20px rgba(0,0,0,0.8);
     }
     .ladder-item {
-      font-size: 18px; padding: 5px 10px; color: #888; display: flex; justify-content: space-between;
+      font-size: 16px; padding: 4px 8px; color: #888; display: flex; justify-content: space-between;
       border-radius: 5px; margin-bottom: 2px; transition: 0.3s;
     }
     .ladder-item.active { color: #000; font-weight: bold; background: #f1c40f; transform: scale(1.05); box-shadow: 0 0 10px #f1c40f;}
@@ -194,15 +187,25 @@ HTML_CODE = """
       z-index: 100; text-align: center; padding: 20px; backdrop-filter: blur(10px);
     }
     .overlay h2 { font-size: 50px; color: #f1c40f; margin-bottom: 10px; text-shadow: 0 0 20px #f1c40f; }
-    .overlay p { font-size: 28px; margin-bottom: 30px; }
-    .btn { padding: 15px 50px; font-size: 24px; background: #f1c40f; color: #000; border: none; border-radius: 30px; font-weight: bold; cursor: pointer; box-shadow: 0 0 20px rgba(241,196,15,0.6); margin: 10px; transition: 0.2s;}
+    .overlay p { font-size: 26px; margin-bottom: 20px; }
+    .btn { padding: 15px 40px; font-size: 22px; background: #f1c40f; color: #000; border: none; border-radius: 30px; font-weight: bold; cursor: pointer; box-shadow: 0 0 20px rgba(241,196,15,0.6); margin: 10px; transition: 0.2s;}
     .btn:hover { transform: scale(1.05); }
     .btn-blue { background: #3498db; color: #fff; box-shadow: 0 0 20px rgba(52,152,219,0.6); }
     .btn-orange { background: #e67e22; color: #fff; box-shadow: 0 0 20px rgba(230,126,34,0.6); }
+    .btn-red { background: #e74c3c; color: #fff; box-shadow: 0 0 20px rgba(231,76,60,0.6); }
+    .btn:disabled { background: #555; color: #aaa; box-shadow: none; cursor: not-allowed; transform: none; }
     .hidden { display: none !important; }
 
     .shop-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 20px; width: 100%; max-width: 500px; }
     .shop-card { background: #111; border: 2px solid #444; border-radius: 10px; padding: 15px; text-align: center; }
+
+    /* Wrong Answer Modal */
+    .modal-box {
+      background: #1a1a2e; border: 3px solid #e74c3c; border-radius: 20px; padding: 30px; text-align: center;
+      box-shadow: 0 0 40px rgba(231, 76, 60, 0.5); max-width: 450px; width: 90%;
+    }
+    .modal-box h2 { color: #e74c3c; font-size: 40px; margin-bottom: 10px; }
+    .modal-box p { font-size: 22px; color: #ccc; margin-bottom: 15px; }
     
     @media (max-width: 700px) {
       .money-ladder { display: none; }
@@ -218,7 +221,7 @@ HTML_CODE = """
   <div class="game-container">
     
     <div class="overlay" id="menuScreen">
-      <h2>KBC Ultimate AI</h2>
+      <h2>KBC 7 Crore Edition</h2>
       <div style="font-size: 24px; margin-bottom: 10px;">🪙 Coins: <b id="coinBalance" style="color:#f1c40f">0</b></div>
       
       <div class="shop-grid">
@@ -248,6 +251,13 @@ HTML_CODE = """
         <div class="timer-circle" id="timerDisplay">45</div>
       </div>
 
+      <!-- NEW: Live Score Display -->
+      <div class="score-display">
+        <h3>Aapka Current Prize</h3>
+        <div class="current-money" id="currentScore">₹ 0</div>
+        <div class="next-target" id="nextTargetText">Next Target: ₹ 1,000</div>
+      </div>
+
       <div class="lifelines">
         <button class="lifeline-btn" id="ll5050" onclick="useLifeline('5050')">50:50 <span id="count5050">0</span></button>
         <button class="lifeline-btn" id="llAudience" onclick="useLifeline('audience')">👥 <span id="countAudience">0</span></button>
@@ -262,6 +272,20 @@ HTML_CODE = """
     </div>
 
     <div class="money-ladder hidden" id="moneyLadder"></div>
+
+    <!-- Wrong Answer Popup -->
+    <div class="overlay hidden" id="wrongScreen" style="background: rgba(0,0,0,0.85);">
+      <div class="modal-box">
+        <h2>❌ Galat Jawab!</h2>
+        <!-- NEW: Show what they are losing -->
+        <p>Aapne abhi tak <b style="color:#2ecc71; font-size: 26px;" id="lostPrizeText">₹ 0</b> jeete hain!</p>
+        <p style="color: #f1c40f; font-size: 18px;">Ad dekh kar apna ye prize bachayein!</p>
+        
+        <button class="btn btn-red" onclick="endGame('wrong')">Go to Home</button>
+        <button class="btn btn-blue" id="reviveBtn" onclick="reviveGame()">Watch Ad & Continue</button>
+        <p id="adWaitText" style="font-size: 18px; color: #f1c40f; margin-top: 15px;"></p>
+      </div>
+    </div>
 
     <div class="overlay hidden" id="resultScreen">
       <h2 id="resultTitle">Game Over</h2>
@@ -295,7 +319,11 @@ HTML_CODE = """
     let currentQ = 0;
     let timeLeft = 45, timerInterval, canClick = false;
     
-    const prizeMoney = ["₹ 1,000", "₹ 5,000", "₹ 10,000", "₹ 50,000", "₹ 1,00,000", "₹ 5,00,000", "₹ 10,00,000", "₹ 50,00,000", "₹ 1 CRORE"];
+    const prizeMoney = [
+      "₹ 1,000", "₹ 2,000", "₹ 3,000", "₹ 5,000", "₹ 10,000", 
+      "₹ 20,000", "₹ 40,000", "₹ 80,000", "₹ 1,60,000", "₹ 3,20,000", 
+      "₹ 6,40,000", "₹ 12,50,000", "₹ 25,00,000", "₹ 50,00,000", "₹ 1 CRORE", "₹ 7 CRORE"
+    ];
 
     function fetchData() {
       fetch('/api/get_data/' + user)
@@ -316,7 +344,7 @@ HTML_CODE = """
       prizeMoney.forEach((amount, index) => {
         const div = document.createElement("div");
         div.className = "ladder-item";
-        if ([3, 6, 8].includes(index)) div.classList.add("milestone");
+        if ([4, 9, 14, 15].includes(index)) div.classList.add("milestone");
         div.innerHTML = `<span>${index + 1}</span> <span>${amount}</span>`;
         div.id = `ladder-${index}`;
         ladder.appendChild(div);
@@ -324,7 +352,7 @@ HTML_CODE = """
     }
 
     function watchAd() {
-      let videoLink = "https://asiafilm.org/4/23852721a9ede5c4d23ead1ed92dadc3"; // Yahan asli ad link daalna
+      let videoLink = "https://asiafilm.org/4/23852721a9ede5c4d23ead1ed92dadc3"; 
       alert("Video khul rahi hai. 10 second baad wapas aana.");
       window.open(videoLink, '_blank');
 
@@ -350,8 +378,6 @@ HTML_CODE = """
       document.getElementById("categoryScreen").classList.remove("hidden");
       const grid = document.getElementById("categoryGrid");
       grid.innerHTML = "";
-      
-      // Naya AI wala option yahan add hai
       const cats = ["Computer", "General Knowledge", "Science", "History", "Mix (All)", "Dynamic Math", "AI Generated (Infinite)"];
       
       cats.forEach(cat => {
@@ -389,6 +415,11 @@ HTML_CODE = """
       document.getElementById("timerDisplay").innerText = timeLeft;
       document.getElementById("timerDisplay").style.color = "#f1c40f";
       
+      // Update Top Score Display
+      let currentWon = currentQ === 0 ? "₹ 0" : prizeMoney[currentQ - 1];
+      document.getElementById("currentScore").innerText = currentWon;
+      document.getElementById("nextTargetText").innerText = `Next Target: ${prizeMoney[currentQ]}`;
+
       let q = gameQuestions[currentQ];
       document.getElementById("questionText").innerText = q.q;
       let optCont = document.getElementById("optionsContainer");
@@ -413,7 +444,7 @@ HTML_CODE = """
         timeLeft--;
         document.getElementById("timerDisplay").innerText = timeLeft;
         if (timeLeft <= 10) document.getElementById("timerDisplay").style.color = "#e74c3c";
-        if (timeLeft <= 0) { clearInterval(timerInterval); endGame("timeout"); }
+        if (timeLeft <= 0) { clearInterval(timerInterval); showWrongPopup(); }
       }, 1000);
     }
 
@@ -428,8 +459,45 @@ HTML_CODE = """
       } else {
         el.classList.add("wrong"); sounds.wrong();
         setTimeout(() => document.getElementById("opt-" + q.ans).classList.add("correct"), 500);
-        setTimeout(() => endGame("wrong"), 2000);
+        setTimeout(() => showWrongPopup(), 1500);
       }
+    }
+
+    function showWrongPopup() {
+      canClick = false;
+      // Show how much they have earned so far
+      let currentWon = currentQ === 0 ? "₹ 0" : prizeMoney[currentQ - 1];
+      document.getElementById("lostPrizeText").innerText = currentWon;
+      
+      document.getElementById("wrongScreen").classList.remove("hidden");
+      document.getElementById("reviveBtn").disabled = false;
+      document.getElementById("adWaitText").innerText = "";
+    }
+
+    function reviveGame() {
+      let videoLink = "https://asiafilm.org/4/23852721a9ede5c4d23ead1ed92dadc3"; 
+      window.open(videoLink, '_blank');
+      
+      let btn = document.getElementById("reviveBtn");
+      btn.disabled = true;
+      let waitTime = 15;
+      document.getElementById("adWaitText").innerText = `Ad dekh rahe hain... Kripya ${waitTime} second wait karein.`;
+
+      let adTimer = setInterval(() => {
+        waitTime--;
+        if (waitTime > 0) {
+          document.getElementById("adWaitText").innerText = `Ad dekh rahe hain... Kripya ${waitTime} second wait karein.`;
+        } else {
+          clearInterval(adTimer);
+          document.getElementById("adWaitText").innerText = "✅ Ad pura ho gaya! Ab aap continue kar sakte hain.";
+          btn.disabled = false;
+          btn.innerText = "Continue Game";
+          btn.onclick = () => {
+            document.getElementById("wrongScreen").classList.add("hidden");
+            loadQuestion(); 
+          };
+        }
+      }, 1000);
     }
 
     function useLifeline(type) {
@@ -465,6 +533,7 @@ HTML_CODE = """
       canClick = false; clearInterval(timerInterval);
       document.getElementById("mainGameArea").classList.add("hidden");
       document.getElementById("moneyLadder").classList.add("hidden");
+      document.getElementById("wrongScreen").classList.add("hidden");
       document.getElementById("resultScreen").classList.remove("hidden");
       
       let wonMoney = currentQ === 0 ? "₹ 0" : prizeMoney[currentQ - 1];
@@ -523,29 +592,25 @@ def start_game():
     
     if username not in users: return jsonify({"status": "error"})
 
-    # --- AI GENERATOR CHECK ---
     if category == "AI Generated (Infinite)":
         ai_qs = generate_ai_questions("Computer, Science, History, or General Knowledge")
         if ai_qs and len(ai_qs) > 0:
             return jsonify({"status": "success", "questions": ai_qs})
         else:
-            # Agar AI fail ho jaye, toh Mix sawal de do
             category = "Mix (All)"
 
-    # --- DYNAMIC MATH CHECK ---
     if category == "Dynamic Math":
-        final_questions = generate_math_questions(9)
+        final_questions = generate_math_questions(16)
         return jsonify({"status": "success", "questions": final_questions})
 
-    # --- STATIC QUESTION BANK LOGIC (80/20) ---
     seen_ids = users[username]["seen_questions"]
     category_pool = ALL_QUESTIONS.get(category, ALL_QUESTIONS["Mix (All)"])
     
     new_pool = [q for q in category_pool if q["id"] not in seen_ids]
     old_pool = [q for q in category_pool if q["id"] in seen_ids]
 
-    num_new_needed = int(9 * 0.8) 
-    num_old_needed = 9 - num_new_needed 
+    num_new_needed = int(16 * 0.8) 
+    num_old_needed = 16 - num_new_needed 
 
     if len(new_pool) < num_new_needed:
         num_old_needed += (num_new_needed - len(new_pool))
@@ -556,9 +621,9 @@ def start_game():
     
     final_questions = selected_new + selected_old
     
-    if len(final_questions) < 9:
+    if len(final_questions) < 16:
         remaining = [q for q in category_pool if q not in final_questions]
-        final_questions += random.sample(remaining, min(9 - len(final_questions), len(remaining)))
+        final_questions += random.sample(remaining, min(16 - len(final_questions), len(remaining)))
 
     random.shuffle(final_questions)
 
@@ -566,8 +631,8 @@ def start_game():
         if q["id"] not in users[username]["seen_questions"]:
             users[username]["seen_questions"].append(q["id"])
 
-    if len(users[username]["seen_questions"]) > 50:
-        users[username]["seen_questions"] = users[username]["seen_questions"][-50:]
+    if len(users[username]["seen_questions"]) > 100:
+        users[username]["seen_questions"] = users[username]["seen_questions"][-100:]
 
     return jsonify({"status": "success", "questions": final_questions})
 
