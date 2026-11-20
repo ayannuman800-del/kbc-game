@@ -455,7 +455,7 @@ HTML_CODE = """
       });
     }
 
-    // --- AD SYSTEM (THE FIX) ---
+    // --- AD SYSTEM ---
     function showAd(action) {
       adActionType = action;
       
@@ -537,7 +537,7 @@ HTML_CODE = """
         method: 'POST', headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({username: user, category: category})
       }).then(res => res.json()).then(data => {
-        if(data.status === "success") {
+        if(data.status === "success" && data.questions && data.questions.length > 0) {
           gameQuestions = data.questions;
           currentQ = 0;
           document.getElementById("categoryScreen").classList.add("hidden");
@@ -546,13 +546,18 @@ HTML_CODE = """
           buildLadder();
           initAudio();
           loadQuestion();
+        } else {
+          alert("Game data load nahi hua. Dobara try karein.");
         }
       });
     }
 
     function loadQuestion() {
-      if (currentQ >= gameQuestions.length) { endGame("win"); return; }
+      if (!gameQuestions || currentQ >= gameQuestions.length) { endGame("win"); return; }
       
+      let q = gameQuestions[currentQ];
+      if (!q) { endGame("win"); return; }
+
       canClick = true; timeLeft = 45;
       document.getElementById("timerDisplay").innerText = timeLeft;
       document.getElementById("timerDisplay").style.color = "#f1c40f";
@@ -561,7 +566,6 @@ HTML_CODE = """
       document.getElementById("currentScore").innerText = currentWon;
       document.getElementById("nextTargetText").innerText = `Next Target: ${prizeMoney[currentQ]}`;
 
-      let q = gameQuestions[currentQ];
       document.getElementById("questionText").innerText = q.q;
       let optCont = document.getElementById("optionsContainer");
       optCont.innerHTML = "";
@@ -744,17 +748,14 @@ def start_game():
         final_secure_list = generate_math_questions(16)
     elif category == "AI Generated (Infinite)":
          final_secure_list = generate_ai_questions("General Knowledge")
-         if not final_secure_list: final_secure_list = generate_math_questions(16)
+         if not final_secure_list or len(final_secure_list) == 0: 
+             final_secure_list = generate_math_questions(16)
     else:
+        # FIXED: Simple and bug-free sample extraction
         pool = prepare_questions(REAL_QUESTIONS)
-        selected = random.sample(pool, min(16, len(pool)))
-        for q in selected:
-            original_q = next((item for item in REAL_QUESTIONS if item["q"] == q["q"]), None)
-            if original_q:
-                correct_idx = q["options"].index(original_q["correct"])
-                q["secure_ans"] = correct_idx
-                final_secure_list.append(q)
+        final_secure_list = random.sample(pool, min(16, len(pool)))
 
+    # Clean for frontend
     clean_qs = []
     game_ans = {}
     for q in final_secure_list:
