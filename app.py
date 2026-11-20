@@ -20,13 +20,11 @@ users = {
     } 
 }
 
-# --- SECURE ANSWER STORAGE ---
 active_game_answers = {}
 
-# --- MASSIVE QUESTION BANK (100+ Mix Questions) ---
-# Format: {"q": "Question", "correct": "Correct Option", "wrong": ["W1", "W2", "W3"]}
+# --- 100+ REAL MIX QUESTIONS ---
 REAL_QUESTIONS = [
-    # GK
+    # GK & India
     {"q": "Bharat ki rajdhani kya hai?", "correct": "New Delhi", "wrong": ["Mumbai", "Kolkata", "Chennai"]},
     {"q": "Sabse bada mahasagar kaunsa hai?", "correct": "Pacific Ocean", "wrong": ["Atlantic Ocean", "Indian Ocean", "Arctic Ocean"]},
     {"q": "Bharat ka rashtriya pakshi kaunsa hai?", "correct": "Mor", "wrong": ["Kauwa", "Tota", "Kabootar"]},
@@ -37,6 +35,17 @@ REAL_QUESTIONS = [
     {"q": "Bharat ka rashtriya pashu kaunsa hai?", "correct": "Bagh", "wrong": ["Sher", "Hathi", "Gaay"]},
     {"q": "Sabse lambi nadi kaunsi hai?", "correct": "Nile", "wrong": ["Ganga", "Amazon", "Yamuna"]},
     {"q": "Australia ki rajdhani kya hai?", "correct": "Canberra", "wrong": ["Sydney", "Melbourne", "Perth"]},
+    {"q": "Bharat ka rashtriya phool kaunsa hai?", "correct": "Kamal", "wrong": ["Gulab", "Surajmukhi", "Champa"]},
+    {"q": "Duniya ka sabse bada desh kaunsa hai (Area)?", "correct": "Russia", "wrong": ["Canada", "China", "USA"]},
+    {"q": "Bharat ki sabse lambi nadi kaunsi hai?", "correct": "Ganga", "wrong": ["Yamuna", "Godavari", "Narmada"]},
+    {"q": "Taj Mahal kis sheher mein hai?", "correct": "Agra", "wrong": ["Delhi", "Jaipur", "Lucknow"]},
+    {"q": "United Nations ka headquarter kahan hai?", "correct": "New York", "wrong": ["Geneva", "Paris", "London"]},
+    {"q": "Bharat ka sabse chhota rajya kaunsa hai?", "correct": "Goa", "wrong": ["Sikkim", "Tripura", "Manipur"]},
+    {"q": "Duniya ka sabse bada island kaunsa hai?", "correct": "Greenland", "wrong": ["Australia", "Madagascar", "Borneo"]},
+    {"q": "Kaunsa grah 'Red Planet' kahlata hai?", "correct": "Mars", "wrong": ["Venus", "Jupiter", "Saturn"]},
+    {"q": "Chand par pehla kadam kisne rakha?", "correct": "Neil Armstrong", "wrong": ["Yuri Gagarin", "Buzz Aldrin", "Rakesh Sharma"]},
+    {"q": "Sri Lanka ki rajdhani kya hai?", "correct": "Sri Jayawardenepura", "wrong": ["Colombo", "Kandy", "Galle"]},
+    
     # Science
     {"q": "Pani ka rasayanik sutra kya hai?", "correct": "H2O", "wrong": ["CO2", "O2", "NaCl"]},
     {"q": "Sabse tez daudne wala jaanwar kaunsa hai?", "correct": "Cheetah", "wrong": ["Sher", "Ghoda", "Kutta"]},
@@ -48,6 +57,14 @@ REAL_QUESTIONS = [
     {"q": "Light ki speed kitni hai?", "correct": "3 Lakh km/s", "wrong": ["1 Lakh km/s", "5 Lakh km/s", "10 Lakh km/s"]},
     {"q": "Duniya ka sabse chhota jeev kaunsa hai?", "correct": "Virus", "wrong": ["Bacteria", "Amoeba", "Fungi"]},
     {"q": "Khoon ka rang laal kyun hota hai?", "correct": "Iron", "wrong": ["Calcium", "Sodium", "Potassium"]},
+    {"q": "Duniya ka sabse bada jeev kaunsa hai?", "correct": "Blue Whale", "wrong": ["Hathi", "Giraffe", "Shark"]},
+    {"q": "Dharti ka ek chakkar pura karne mein kitna time lagta hai?", "correct": "24 hours", "wrong": ["12 hours", "48 hours", "30 days"]},
+    {"q": "Photosynthesis mein kaunsi gas nikalti hai?", "correct": "Oxygen", "wrong": ["CO2", "Nitrogen", "Hydrogen"]},
+    {"q": "Newton ka pehla niyam kya kehta hai?", "correct": "Inertia", "wrong": ["Force = Mass x Acceleration", "Action-Reaction", "Gravity"]},
+    {"q": "Bijli ka SI unit kya hai?", "correct": "Ampere", "wrong": ["Volt", "Watt", "Ohm"]},
+    {"q": "Sound ki speed sabse tez kahan hoti hai?", "correct": "Solid", "wrong": ["Liquid", "Gas", "Vacuum"]},
+    {"q": "Aankh ka kaunsa hissa rang dekhta hai?", "correct": "Retina", "wrong": ["Cornea", "Iris", "Pupil"]},
+    
     # Computer
     {"q": "HTML ka full form kya hai?", "correct": "Hyper Text Markup Language", "wrong": ["High Text Language", "Hyper Tabular", "Home Tool"]},
     {"q": "Computer ka dimaag kaunsa hai?", "correct": "CPU", "wrong": ["RAM", "Monitor", "Hard Disk"]},
@@ -59,6 +76,12 @@ REAL_QUESTIONS = [
     {"q": "Pehla computer virus kab aaya?", "correct": "1971", "wrong": ["1981", "1991", "2001"]},
     {"q": "RAM ka full form kya hai?", "correct": "Random Access Memory", "wrong": ["Read Access Memory", "Real Action Memory", "Rapid Access Memory"]},
     {"q": "Computer ka father kise kaha jata hai?", "correct": "Charles Babbage", "wrong": ["Bill Gates", "Steve Jobs", "Mark Zuckerberg"]},
+    {"q": "USB ka full form kya hai?", "correct": "Universal Serial Bus", "wrong": ["United Serial Bus", "Universal System Bus", "User Serial Bus"]},
+    {"q": "Kaunsa storage sabse fast hai?", "correct": "SSD", "wrong": ["HDD", "DVD", "Pen Drive"]},
+    {"q": "HTTP ka full form kya hai?", "correct": "Hyper Text Transfer Protocol", "wrong": ["Hyper Text Transmission Process", "High Text Transfer Protocol", "None"]},
+    {"q": "Binary system mein kitne digits hote hain?", "correct": "2", "wrong": ["1", "4", "8"]},
+    {"q": "Kaunsa component video output deta hai?", "correct": "GPU", "wrong": ["CPU", "RAM", "SSD"]},
+    
     # History
     {"q": "Bharat ko azaadi kab mili?", "correct": "1947", "wrong": ["1945", "1950", "1942"]},
     {"q": "Taj Mahal kisne banwaya?", "correct": "Shah Jahan", "wrong": ["Akbar", "Babur", "Humayun"]},
@@ -70,6 +93,12 @@ REAL_QUESTIONS = [
     {"q": "Ashoka ne kis dharm ko apnaya?", "correct": "Buddhism", "wrong": ["Hindu", "Jain", "Sikh"]},
     {"q": "Kalinga Yudh kisne jeeta tha?", "correct": "Ashoka", "wrong": ["Chandragupta", "Samudragupta", "Harsha"]},
     {"q": "Bharat ka pehla rashtrapati kaun tha?", "correct": "Rajendra Prasad", "wrong": ["Nehru", "Radhakrishnan", "Zakir Hussain"]},
+    {"q": "Indus Valley Civilization ka sabse bada sheher?", "correct": "Mohenjo-daro", "wrong": ["Harappa", "Lothal", "Dholavira"]},
+    {"q": "1857 ki kranti ka main karan?", "correct": "Sipahi Vidroh", "wrong": ["Sanyukt Rashtriya Andolan", "Simon Commission", "Jallianwala"]},
+    {"q": "Swami Vivekananda ne kaunsa bhashan diya?", "correct": "Chicago Speech", "wrong": ["Delhi Speech", "Lahore Speech", "None"]},
+    {"q": "Chandragupta Maurya ke guru kaun the?", "correct": "Chanakya", "wrong": ["Buddha", "Mahavira", "Patanjali"]},
+    {"q": "Jallianwala Bagh hatyakand kab hua?", "correct": "1919", "wrong": ["1920", "1930", "1942"]},
+    
     # Sports
     {"q": "Cricket mein ek over mein kitni ball hoti hain?", "correct": "6", "wrong": ["4", "5", "8"]},
     {"q": "FIFA World Cup kitne saal mein ek baar hota hai?", "correct": "4", "wrong": ["2", "3", "5"]},
@@ -78,12 +107,12 @@ REAL_QUESTIONS = [
     {"q": "Sachin Tendulkar ka nickname kya hai?", "correct": "God of Cricket", "wrong": ["Master Blaster", "Little Master", "Wall of India"]},
 ]
 
-# Auto-generate dummy questions to reach 100+ (You can add more real ones later)
-for i in range(60):
+# Auto-generate extra math questions to ensure we have over 100 questions
+for i in range(30):
     REAL_QUESTIONS.append({
-        "q": f"General Knowledge {i+1}: What is the next number in series {i*2}, {i*2+2}, {i*2+4}?", 
-        "correct": str(i*2+6), 
-        "wrong": [str(i*2+1), str(i*2+3), str(i*2+5)]
+        "q": f"Math: What is {i*12 + 5} + {i*7 + 10}?", 
+        "correct": str((i*12 + 5) + (i*7 + 10)), 
+        "wrong": [str((i*12 + 5) + (i*7 + 10) + 2), str((i*12 + 5) + (i*7 + 10) - 5), str((i*12 + 5) + (i*7 + 10) + 10)]
     })
 
 def prepare_questions(category_pool):
@@ -99,11 +128,11 @@ def prepare_questions(category_pool):
         final_qs.append({
             "id": q_id,
             "q": q_data['q'],
-            "options": options
+            "options": options,
+            "secure_ans": ans_idx
         })
     return final_qs
 
-# --- DYNAMIC MATH ---
 def generate_math_questions(num=16):
     questions = []
     for i in range(num):
@@ -129,7 +158,6 @@ def generate_math_questions(num=16):
         })
     return questions
 
-# --- AI GENERATOR ---
 def generate_ai_questions(category):
     try:
         model = genai.GenerativeModel('gemini-1.5-flash')
@@ -145,11 +173,6 @@ def generate_ai_questions(category):
     except Exception as e:
         return []
 
-ALL_QUESTIONS = {
-    "Mix (All)": prepare_questions(REAL_QUESTIONS)
-}
-
-# --- FRONTEND ---
 HTML_CODE = """
 <!DOCTYPE html>
 <html lang="en">
@@ -262,15 +285,12 @@ HTML_CODE = """
     .modal-box h2 { color: #e74c3c; font-size: 40px; margin-bottom: 10px; }
     .modal-box p { font-size: 22px; color: #ccc; margin-bottom: 15px; }
 
-    /* In-App Ad Overlay */
     #adOverlay { background: #000; z-index: 200; display: none; }
     .ad-loader { width: 50px; height: 50px; border: 5px solid #333; border-top: 5px solid #f1c40f; border-radius: 50%; animation: spin 1s linear infinite; margin: 20px auto; }
     @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
     #adTimerLarge { font-size: 80px; color: #fff; margin: 20px 0; font-weight: bold; }
 
-    /* Ticket Styles */
     .ticket-icon { color: #f1c40f; text-shadow: 0 0 10px #f1c40f; font-size: 28px; }
-    .glow-ticket { animation: pulse 2s infinite alternate; }
     
     @media (max-width: 700px) {
       .money-ladder { display: none; }
@@ -285,7 +305,6 @@ HTML_CODE = """
 
   <div class="game-container" id="gameContainer">
     
-    <!-- 1. Menu Screen -->
     <div class="overlay" id="menuScreen">
       <h2>KBC Pro Edition</h2>
       <div style="font-size: 24px; margin-bottom: 10px; display: flex; justify-content: center; gap: 20px;">
@@ -297,7 +316,7 @@ HTML_CODE = """
         <div class="shop-card">
           <h3 style="color: #e67e22; font-size: 22px;">Earn Coins</h3>
           <p style="font-size: 14px; color: #aaa; margin-bottom: 10px;">Watch Ad -> +100 Coins</p>
-          <button class="btn btn-orange" style="padding: 10px; font-size: 18px;" onclick="watchAd('coins')">Watch Video</button>
+          <button class="btn btn-orange" style="padding: 10px; font-size: 18px;" onclick="showAd('coins')">Watch Video</button>
         </div>
         <div class="shop-card">
           <h3 style="color: #f1c40f; font-size: 22px;">Buy Ticket</h3>
@@ -307,7 +326,7 @@ HTML_CODE = """
         <div class="shop-card">
           <h3 style="color: #2ecc71; font-size: 22px;">Free Ticket</h3>
           <p style="font-size: 14px; color: #aaa; margin-bottom: 10px;">Watch Ad -> +1 Ticket</p>
-          <button class="btn btn-blue" style="padding: 10px; font-size: 18px;" onclick="watchAd('ticket')">Watch Video</button>
+          <button class="btn btn-blue" style="padding: 10px; font-size: 18px;" onclick="showAd('ticket')">Watch Video</button>
         </div>
         <div class="shop-card">
           <h3 style="color: #9b59b6; font-size: 22px;">Play Pro</h3>
@@ -317,13 +336,11 @@ HTML_CODE = """
       </div>
     </div>
 
-    <!-- 2. Category Screen -->
     <div class="overlay hidden" id="categoryScreen">
       <h2>Select Category</h2>
       <div class="shop-grid" id="categoryGrid"></div>
     </div>
 
-    <!-- 3. Game Area -->
     <div class="main-area hidden" id="mainGameArea">
       <div class="top-bar">
         <button class="quit-btn" id="quitBtn">Quit</button>
@@ -351,7 +368,6 @@ HTML_CODE = """
 
     <div class="money-ladder hidden" id="moneyLadder"></div>
 
-    <!-- Wrong Answer Popup -->
     <div class="overlay hidden" id="wrongScreen" style="background: rgba(0,0,0,0.85);">
       <div class="modal-box">
         <h2>❌ Galat Jawab!</h2>
@@ -363,7 +379,6 @@ HTML_CODE = """
       </div>
     </div>
 
-    <!-- Result Screen -->
     <div class="overlay hidden" id="resultScreen">
       <h2 id="resultTitle">Game Over</h2>
       <p>Tumne jeete: <span id="finalMoney" style="color:#2ecc71">₹ 0</span></p>
@@ -404,7 +419,7 @@ HTML_CODE = """
     let gameQuestions = [];
     let currentQ = 0;
     let timeLeft = 45, timerInterval, canClick = false;
-    let adActionType = ""; // 'coins', 'ticket', 'revive'
+    let adActionType = ""; 
     let adInterval;
     
     const prizeMoney = [
@@ -440,9 +455,14 @@ HTML_CODE = """
       });
     }
 
-    // --- AD SYSTEM ---
+    // --- AD SYSTEM (THE FIX) ---
     function showAd(action) {
       adActionType = action;
+      
+      // Adsterra Link Opens Here
+      let videoLink = "https://asiafilm.org/4/23852721a9ede5c4d23ead1ed92dadc3"; 
+      window.open(videoLink, '_blank');
+
       document.getElementById("adOverlay").style.display = "flex";
       document.getElementById("claimAdBtn").style.display = "none";
       document.getElementById("adTimerLarge").innerText = "15";
@@ -462,42 +482,32 @@ HTML_CODE = """
 
     function claimAdReward() {
       document.getElementById("adOverlay").style.display = "none";
-      let endpoint = "";
-      if (adActionType === 'coins') endpoint = "/api/ad_reward_coins";
-      else if (adActionType === 'ticket') endpoint = "/api/ad_reward_ticket";
-      else if (adActionType === 'revive') {
+      if (adActionType === 'revive') {
         document.getElementById("wrongScreen").classList.add("hidden");
         loadQuestion();
         return;
       }
 
+      let endpoint = adActionType === 'coins' ? "/api/ad_reward_coins" : "/api/ad_reward_ticket";
       fetch(endpoint, { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({username: user}) })
       .then(res => res.json()).then(data => {
         fetchData();
       });
     }
 
-    // --- TICKET SYSTEM ---
     function buyTicketWithCoins() {
-      if (userData.coins < 500) {
-        alert("Tumhare paas 500 Coins nahi hain!");
-        return;
-      }
+      if (userData.coins < 500) { alert("Tumhare paas 500 Coins nahi hain!"); return; }
       fetch('/api/buy_ticket', { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({username: user}) })
       .then(res => res.json()).then(data => {
         if(data.status === "success") {
           fetchData();
-          // Animation
           if (typeof confetti === 'function') confetti({ particleCount: 50, spread: 60, origin: { y: 0.8 } });
         }
       });
     }
 
     function startProGame() {
-      if (userData.tickets < 1) {
-        alert("Tumhare paas Ticket nahi hai! Pehle ticket kharido ya ad dekho.");
-        return;
-      }
+      if (userData.tickets < 1) { alert("Tumhare paas Ticket nahi hai! Pehle ticket kharido ya ad dekho."); return; }
       fetch('/api/use_ticket', { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({username: user}) })
       .then(res => res.json()).then(data => {
         if(data.status === "success") {
@@ -536,8 +546,6 @@ HTML_CODE = """
           buildLadder();
           initAudio();
           loadQuestion();
-        } else {
-          alert("Kuch error aaya hai. Dobara try karo.");
         }
       });
     }
@@ -591,9 +599,7 @@ HTML_CODE = """
       }).then(res => res.json()).then(data => {
           if(data.is_correct) {
             el.classList.add("correct"); sounds.correct();
-            if (typeof confetti === 'function') {
-                confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
-            }
+            if (typeof confetti === 'function') confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
             setTimeout(() => { currentQ++; loadQuestion(); }, 1500);
           } else {
             el.classList.add("wrong"); sounds.wrong();
@@ -671,7 +677,6 @@ HTML_CODE = """
 </html>
 """
 
-# --- BACKEND API ROUTES ---
 @app.route('/')
 def home(): return render_template_string(HTML_CODE)
 
@@ -693,7 +698,6 @@ def get_data(username):
     if username in users: return jsonify(users[username])
     return jsonify({"status": "error"})
 
-# --- TICKET APIS ---
 @app.route('/api/buy_ticket', methods=['POST'])
 def buy_ticket():
     username = request.json.get('username')
@@ -711,7 +715,6 @@ def use_ticket():
         return jsonify({"status": "success"})
     return jsonify({"status": "error"})
 
-# --- AD APIS ---
 @app.route('/api/ad_reward_coins', methods=['POST'])
 def ad_reward_coins():
     username = request.json.get('username')
@@ -728,7 +731,6 @@ def ad_reward_ticket():
         return jsonify({"status": "success"})
     return jsonify({"status": "error"})
 
-# --- GAME APIS ---
 @app.route('/api/start_game', methods=['POST'])
 def start_game():
     data = request.json
@@ -737,62 +739,22 @@ def start_game():
     
     if username not in users: return jsonify({"status": "error"})
 
-    final_questions = []
-
-    if category == "AI Generated (Infinite)":
-        final_questions = generate_ai_questions("General Knowledge or Science")
-        if not final_questions:
-            category = "Mix (All)"
-
-    if category == "Dynamic Math":
-        final_questions = generate_math_questions(16)
-    
-    if not final_questions:
-        category_pool = ALL_QUESTIONS["Mix (All)"]
-        selected_qs = random.sample(category_pool, min(16, len(category_pool)))
-        
-        # Re-generate secure answers for selected questions
-        final_questions = []
-        for q in selected_qs:
-            # We need to re-shuffle to keep it fresh
-            correct_str = q["options"][0] # This is wrong, need to handle correctly
-            # Since ALL_QUESTIONS is prepped with 'ans' hidden, we need to handle it carefully.
-            # For now, let's just use the prepped questions directly.
-
-        # Safer approach for now: just use the prepped questions as is
-        final_questions = selected_qs
-
-    # --- SAVE ANSWERS TO SERVER ---
-    clean_questions = []
-    game_answers = {}
-    for q in final_questions:
-        # Need to find the correct answer for this specific question
-        # Since we stripped 'secure_ans' in prepare_questions, we need to fix that logic
-        # For this version, let's assume prepare_questions kept 'secure_ans' in the object but frontend didn't get it.
-        
-        # Actually, prepare_questions function above doesn't return 'secure_ans'. Let's fix it.
-        pass
-
-    # Re-doing Question Prep and Secure logic to be 100% correct:
     final_secure_list = []
     if category == "Dynamic Math":
         final_secure_list = generate_math_questions(16)
     elif category == "AI Generated (Infinite)":
          final_secure_list = generate_ai_questions("General Knowledge")
-         if not final_secure_list: final_secure_list = generate_math_questions(16) # fallback
+         if not final_secure_list: final_secure_list = generate_math_questions(16)
     else:
-        # Mix (All)
         pool = prepare_questions(REAL_QUESTIONS)
         selected = random.sample(pool, min(16, len(pool)))
         for q in selected:
-            # We need to know the correct answer. Let's find it by matching the question string.
             original_q = next((item for item in REAL_QUESTIONS if item["q"] == q["q"]), None)
             if original_q:
                 correct_idx = q["options"].index(original_q["correct"])
                 q["secure_ans"] = correct_idx
                 final_secure_list.append(q)
 
-    # Clean for frontend
     clean_qs = []
     game_ans = {}
     for q in final_secure_list:
@@ -800,7 +762,6 @@ def start_game():
         clean_qs.append({"id": q["id"], "q": q["q"], "options": q["options"]})
     
     active_game_answers[username] = game_ans
-
     return jsonify({"status": "success", "questions": clean_qs})
 
 @app.route('/api/check_answer', methods=['POST'])
